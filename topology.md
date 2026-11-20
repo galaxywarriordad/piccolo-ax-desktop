@@ -1,8 +1,14 @@
-## 🗺️ Part 1: Topology
+# 🗺️ piccolo-ax-desktop Topology & Architecture Design (`topology.md`)
+
+The topology of `piccolo-ax-desktop` enforces strict boundaries along **three dimensions**: compute/real-time isolation, storage (`EROFS` vs. `SHARE`), and package tiers (Core vs. Heavy).
+
+---
+
+## 🗺️ Part 1: piccolo-ax-desktop Topology
 
 The topology of `piccolo-ax-desktop` enforces strict boundaries along three dimensions: compute/real-time isolation, storage (`EROFS` vs. `SHARE`), and package tiers (Core vs. Heavy).
 
-### ⚡ 1. Compute & Session Topology
+### ⚡ 1. Compute & Session piccolo-ax-desktop Topology
 
 ```text
 +-------------------------------------------------------------------+
@@ -37,7 +43,7 @@ The topology of `piccolo-ax-desktop` enforces strict boundaries along three dime
 +-------------------------------------------------------------------+
 ```
 
-### 🗂️ 2. Repository & Delivery Topology
+### 🗂️ 2. piccolo-ax-desktop Repository & Delivery Topology
 
 ```text
 piccolo-ax-desktop/
