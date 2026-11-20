@@ -20,8 +20,10 @@ The topology of `piccolo-ax-desktop` enforces strict boundaries along **three di
 |  |  - Core isolation boundaries|  |  - LXQt (default) or XFCE   |  |
 |  |  - Audio / media / synth /  |  |  - Falkon, AbiWord,         |  |
 |  |    controller lanes         |  |    Gnumeric, Foliate, PDF   |  |
-|  |  - Zero desktop / browser / |  |  - Optional heavy tools     |  |
-|  |    transcoding daemons      |  |    (GIMP/Krita, Shotcut,    |  |
+|  |  - Zero desktop / browser / |  |  - mtPaint, GrafX2,         |  |
+|  |    transcoding daemons      |  |    AzPainter, LibreSprite   |  |
+|  |  - No mutable user state    |  |  - Optional heavy tools     |  |
+|  |    or background updaters   |  |    (GIMP/Krita, Shotcut,    |  |
 |  |                             |  |    HandBrake)               |  |
 |  +--------------+--------------+  +--------------+--------------+  |
 |                 |                                |                |
@@ -61,12 +63,18 @@ piccolo-ax-desktop/
 ├── scripts/
 │   ├── launch-desktop.sh
 │   ├── launch-falkon.sh
+│   ├── launch-mtpaint.sh
 │   └── stage-share-apps.sh
 ├── buildroot/
-│   └── README.md
+│   ├── Config.in
+│   ├── README.md
+│   └── package/
+│       ├── azpainter/
+│       └── libresprite/
 └── docs/
     └── packages.md
 ```
+
 
 ### 🛡️ 3. Boundary Invariants
 
