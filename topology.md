@@ -6,12 +6,11 @@ The topology of `piccolo-ax-desktop` enforces strict boundaries along **three di
 
 ## 🗺️ Part 1: piccolo-ax-desktop Topology
 
-The topology of `piccolo-ax-desktop` enforces strict boundaries along three dimensions: compute/real-time isolation, storage (`EROFS` vs. `SHARE`), and package tiers (Core vs. Heavy).
-
 ### ⚡ 1. Compute & Session piccolo-ax-desktop Topology
 
 ```text
 +-------------------------------------------------------------------+
+
 |                      Piccolo-AX Host Hardware                     |
 |                                                                   |
 |  +-----------------------------+  +-----------------------------+  |
@@ -29,6 +28,7 @@ The topology of `piccolo-ax-desktop` enforces strict boundaries along three dime
 +-----------------|--------------------------------|----------------+
                   v                                v
 +-------------------------------------------------------------------+
+
 |                       Storage & State Layer                       |
 |                                                                   |
 |  +-----------------------------+  +-----------------------------+  |
@@ -74,6 +74,8 @@ piccolo-ax-desktop/
 * **No user bloat in the read-only OS layer:** Profiles, caches, documents, ebooks/comics, local `git` repos, and optional AppImages live under `SHARE` (`${AX_SHARE_ROOT:-/userdata}/desktop`).
 * **Bootloader stays decoupled until validated:** Boot menu entries (`grub.cfg` / session flags) are added only after session startup and `SHARE` persistence are proven on hardware.
 
+---
+
 ## 🏗️ Part 2: Architecture Design
 
 ### 🎯 1. Architectural Goals & Non-Goals
@@ -104,8 +106,24 @@ Always present when Desktop Mode is selected, covering everyday lightweight task
 Opt-in tools with larger binary, dependency, or runtime footprints (`GIMP`, `Krita`, `Shotcut`, `HandBrake`):
 
 * **Opt-In by Default:** Disabled in core profiles (`n`) so users who only want a lightweight desktop do not pay the size or build cost
-* **Flexible Delivery (`appimage-share` vs. `package`):** Supports staging self-contained AppImages or portable tools under `${AX_SHARE_ROOT}/desktop/apps` or enabling package selections when building a heavier variant * **Session Discipline:** Intended to run inside Desktop Mode and be closed before returning to real-time appliance workloads  ---  ### 🔄 3. State, Environment & Launcher Flow  1. **Environment Initialization (`overlays/common/etc/profile.d/ax-desktop-xdg.sh`):** * Resolves `AX_SHARE_ROOT` (defaulting to `/userdata`) and sets `AX_DESKTOP_ROOT="${AX_SHARE_ROOT}/desktop"`
-   * Exports `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, and `XDG_CACHE_HOME` under `${AX_DESKTOP_ROOT}` so desktop configs, application state, and caches stay persistent and isolated from the read-only rootfs * Creates standard subdirectories (`xdg-config`, `xdg-data`, `xdg-cache`, `apps`, `docs`, `books`, `src`) when `SHARE` is present  2. **Desktop Session Launch (`scripts/launch-desktop.sh`):** * Sources `/etc/profile.d/ax-desktop-xdg.sh` (falling back to the repo overlay during local testing) * Selects the configured desktop session (`AX_DESKTOP_SESSION`: `lxqt` or `xfce`) and hands off cleanly via `exec`  3. **Direct-to-Falkon Launch (`scripts/launch-falkon.sh`):** * Supports launching **Falkon** directly for a focused browser flow while ensuring XDG/`SHARE` paths are initialized and avoiding root-user sandbox pitfalls typical of Chromium/QtWebEngine runtimes  4. **Optional `SHARE` Staging (`scripts/stage-share-apps.sh`):** * Prepares `${AX_DESKTOP_ROOT}/apps` and validates/stages optional AppImages or local user tools without altering read-only OS files
+* **Flexible Delivery (`appimage-share` vs. `package`):** Supports staging self-contained AppImages or portable tools under `${AX_SHARE_ROOT}/desktop/apps` or enabling package selections when building a heavier variant
+* **Session Discipline:** Intended to run inside Desktop Mode and be closed before returning to real-time appliance workloads
+
+---
+
+### 🔄 3. State, Environment & Launcher Flow
+
+1. **Environment Initialization (`overlays/common/etc/profile.d/ax-desktop-xdg.sh`):**
+   * Resolves `AX_SHARE_ROOT` (defaulting to `/userdata`) and sets `AX_DESKTOP_ROOT="${AX_SHARE_ROOT}/desktop"`
+   * Exports `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, and `XDG_CACHE_HOME` under `${AX_DESKTOP_ROOT}` so desktop configs, application state, and caches stay persistent and isolated from the read-only rootfs
+   * Creates standard subdirectories (`xdg-config`, `xdg-data`, `xdg-cache`, `apps`, `docs`, `books`, `src`) when `SHARE` is present
+2. **Desktop Session Launch (`scripts/launch-desktop.sh`):**
+   * Sources `/etc/profile.d/ax-desktop-xdg.sh` (falling back to the repo overlay during local testing)
+   * Selects the configured desktop session (`AX_DESKTOP_SESSION`: `lxqt` or `xfce`) and hands off cleanly via `exec`
+3. **Direct-to-Falkon Launch (`scripts/launch-falkon.sh`):**
+   * Supports launching **Falkon** directly for a focused browser flow while ensuring XDG/`SHARE` paths are initialized and avoiding root-user sandbox pitfalls typical of Chromium/QtWebEngine runtimes
+4. **Optional `SHARE` Staging (`scripts/stage-share-apps.sh`):**
+   * Prepares `${AX_DESKTOP_ROOT}/apps` and validates/stages optional AppImages or local user tools without altering read-only OS files
 
 ---
 
