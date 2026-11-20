@@ -93,21 +93,27 @@ piccolo-ax-desktop/
 
 ## 📦 2. Tiered Package Architecture
 
-### Tier A — Core Desktop (`profiles/desktop-core.mk`)
-Always present when Desktop Mode is selected, covering everyday lightweight tasks without large media/painting suites:
+# 📦 Packages & Tiers (`docs/packages.md`)
 
-- **Session & Windowing:** `LXQt` (default alongside Qt-native **Falkon**) or `XFCE`, running over X11.
-- **Browser:** **Falkon** (C++/Qt browser with built-in ad blocking; supports both full desktop usage and a dedicated direct-launch path).
-- **Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet).
-- **Reading:** **Foliate** (EPUB/CBZ/ebooks) paired with a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`).
-- **CLI & File Utilities:** `git`, terminal emulator, and archive tools[cite: 2].
+`piccolo-ax-desktop` splits software into a lean **Core Desktop** tier and an opt-in **Heavy Tier** so everyday tasks stay fast while large creative/transcoding tools do not inflate default builds. See [topology.md](../topology.md) for compute, storage (`EROFS` vs. `SHARE`), and session boundaries.
 
-### Tier B — Optional Heavy Tier (`profiles/desktop-heavy.mk`)
-Opt-in tools with larger binary, dependency, or runtime footprints (`GIMP`, `Krita`, `Shotcut`, `HandBrake`):
+## Tier A — Core Desktop (`profiles/desktop-core.mk`)
 
-- **Opt-In by Default:** Disabled in core profiles (`n`) so users who only want a lightweight desktop do not pay the size or build cost.
-- **Flexible Delivery (`appimage-share` vs. `package`):** Supports staging self-contained AppImages or portable tools under `${AX_SHARE_ROOT}/desktop/apps` or enabling package selections when building a heavier variant. - **Session Discipline:** Intended to run inside Desktop Mode and be closed before returning to real-time appliance workloads[cite: 1, 2].  ---  ## 🔄 3. State, Environment & Launcher Flow  1. **Environment Initialization (`overlays/common/etc/profile.d/ax-desktop-xdg.sh`):** - Resolves `AX_SHARE_ROOT` (defaulting to `/userdata`) and sets `AX_DESKTOP_ROOT="${AX_SHARE_ROOT}/desktop"`.
-   - Exports `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, and `XDG_CACHE_HOME` under `${AX_DESKTOP_ROOT}` so desktop configs, application state, and caches stay persistent and isolated from the read-only rootfs. - Creates standard subdirectories (`xdg-config`, `xdg-data`, `xdg-cache`, `apps`, `docs`, `books`, `src`) when `SHARE` is present.  2. **Desktop Session Launch (`scripts/launch-desktop.sh`):** - Sources `/etc/profile.d/ax-desktop-xdg.sh` (falling back to the repo overlay during local testing). - Selects the configured desktop session (`AX_DESKTOP_SESSION`: `lxqt` or `xfce`) and hands off cleanly via `exec`.  3. **Direct-to-Falkon Launch (`scripts/launch-falkon.sh`):** - Supports launching **Falkon** directly for a focused browser flow while ensuring XDG/`SHARE` paths are initialized and avoiding root-user sandbox pitfalls typical of Chromium/QtWebEngine runtimes.  4. **Optional `SHARE` Staging (`scripts/stage-share-apps.sh`):** - Prepares `${AX_DESKTOP_ROOT}/apps` and validates/stages optional AppImages or local user tools without altering read-only OS files.
+* **Session:** `LXQt` (preferred alongside Qt-native **Falkon**) or `XFCE` over X11.
+* **Browser:** **Falkon** (C++/Qt, built-in ad blocking, supports full desktop or `scripts/launch-falkon.sh`).
+* **Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet).
+* **Readers:** **Foliate** (EPUB/CBZ/ebooks) and a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`).
+* **Utilities:** `git`, terminal emulator, and archive tools.
+
+## Tier B — Optional Heavy Tier (`profiles/desktop-heavy.mk`)
+
+* **Graphics & Painting:** **GIMP**, **Krita**.
+* **Video & Transcoding:** **Shotcut** (or **Kdenlive**), **HandBrake**.
+* **Delivery:** Prefer staging AppImages/portable tools under `${AX_SHARE_ROOT:-/userdata}/desktop/apps` via `scripts/stage-share-apps.sh`, and run only inside Desktop Mode (never overlapping with real-time appliance workloads).
+
+## Upstream Licenses
+
+Upstream applications and toolkits retain their respective upstream licenses; repository-authored scripts, profiles, overlays, and docs in `piccolo-ax-desktop` are licensed under **GPLv3**.
 
 ---
 
