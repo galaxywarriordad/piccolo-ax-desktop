@@ -14,4 +14,4 @@ config BR2_PACKAGE_AZPAINTER
 	  Lightweight 16-bit full-color illustration and painting
 	  application for Linux/X11.
 
-	  https://github.com/BryanLunduke/lunduke-paint.git
+	  https://gitlab.com/azelpg/azpainter.git
