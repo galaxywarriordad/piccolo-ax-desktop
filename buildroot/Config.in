@@ -1,0 +1,4 @@
+menu "Piccolo-AX Desktop Packages"
+	source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/azpainter/Config.in"
+	source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/libresprite/Config.in"
+endmenu
