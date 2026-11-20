@@ -13,6 +13,12 @@ AX_PKG_ABIWORD ?= y
 AX_PKG_GNUMERIC ?= y
 AX_PKG_FOLIATE ?= y
 
+# Core 2D & pixel graphics suite (< 30 MB total)
+AX_PKG_MTPAINT ?= y
+AX_PKG_GRAFX2 ?= y
+AX_PKG_AZPAINTER ?= y
+AX_PKG_LIBRESPRITE ?= y
+
 # Lightweight PDF viewer choice: qpdfview, mupdf, or atril
 AX_DESKTOP_PDF_VIEWER ?= qpdfview
 
