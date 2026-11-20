@@ -18,6 +18,14 @@ Always included when Desktop Mode is enabled ("everything up to the large files"
 * **Browser:** **Falkon** (Qt-native C++ browser with built-in ad blocking)
 * **Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet)
 * **Reading:** **Foliate** (ebooks/comics) + a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`)
+  
+### 2D & Pixel Graphics Suite (Tier A Core)
+`profiles/desktop-core.mk` includes a native C/C++ 2D and pixel-art suite (< 30 MB total footprint) modeled on classic Amiga graphics workflows:
+
+* **mtPaint (`AX_PKG_MTPAINT`)**: Indexed palette editing, custom dithering matrices, and low-overhead pixel manipulation (wrapped via `/usr/local/bin/mtpaint` to persist config to `SHARE`).
+* **GrafX2 (`AX_PKG_GRAFX2`)**: Pure C/SDL2 256-color pixel editor with Deluxe Paint-style custom brush grabbing, color cycling, and dual-view zoom.
+* **AzPainter (`AX_PKG_AZPAINTER`)**: Compact C/X11 16-bit full-color illustration and layer painting app (packaged in `buildroot/package/azpainter/`).
+* **LibreSprite (`AX_PKG_LIBRESPRITE`)**: Native C++/SDL2 animated sprite-sheet editor with timeline scrubbing and onion-skinning (packaged in `buildroot/package/libresprite/`).
 
 ### 2. Optional Heavy Tier (`profiles/desktop-heavy.mk`)
 Opt-in install selections or `SHARE`-staged tools/AppImages kept out of the core footprint unless explicitly requested:
