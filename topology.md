@@ -1,4 +1,4 @@
-# 🗺️ Topology & Architecture Design
+# 🗺️ piccolo-ax-desktop Topology & Architecture Design
 
 The topology of `piccolo-ax-desktop` enforces strict boundaries along **three dimensions**: compute/real-time isolation, storage (`EROFS` vs. `SHARE`), and package tiers (Core vs. Heavy).
 
