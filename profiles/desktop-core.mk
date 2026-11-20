@@ -1,5 +1,5 @@
 # piccolo-ax-desktop/profiles/desktop-core.mk
-# Core Desktop profile (Tier A): lightweight session, Falkon, office, and readers.
+# Core Desktop profile (Tier A): lightweight session, Falkon, office, readers, and 2D/pixel graphics.
 # Excludes heavy creative/transcoding suites (see profiles/desktop-heavy.mk).
 
 AX_DESKTOP_CORE_ENABLED ?= y
