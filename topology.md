@@ -1,3 +1,73 @@
+## 🗺️ Part 1: Topology
+
+The topology of `piccolo-ax-desktop` enforces strict boundaries along three dimensions: compute/real-time isolation, storage (`EROFS` vs. `SHARE`), and package tiers (Core vs. Heavy).
+
+### ⚡ 1. Compute & Session Topology
+
+```text
++-------------------------------------------------------------------+
+|                      Piccolo-AX Host Hardware                     |
+|                                                                   |
+|  +-----------------------------+  +-----------------------------+  |
+|  |   APPLIANCE MODE (Default)  |  |  DESKTOP MODE (Secondary)   |  |
+|  |                             |  |                             |  |
+|  |  - Real-time / low-latency  |  |  - On-demand X11 session    |  |
+|  |  - Core isolation boundaries|  |  - LXQt (default) or XFCE   |  |
+|  |  - Audio / media / synth /  |  |  - Falkon, AbiWord,         |  |
+|  |    controller lanes         |  |    Gnumeric, Foliate, PDF   |  |
+|  |  - Zero desktop / browser / |  |  - Optional heavy tools     |  |
+|  |    transcoding daemons      |  |    (GIMP/Krita, Shotcut,    |  |
+|  |                             |  |    HandBrake)               |  |
+|  +--------------+--------------+  +--------------+--------------+  |
+|                 |                                |                |
++-----------------|--------------------------------|----------------+
+                  v                                v
++-------------------------------------------------------------------+
+|                       Storage & State Layer                       |
+|                                                                   |
+|  +-----------------------------+  +-----------------------------+  |
+|  |   Read-Only System / EROFS  |  |   Persistent SHARE          |  |
+|  |                             |  |   (/userdata/desktop/...)   |  |
+|  |  - Base appliance & core    |  |                             |  |
+|  |    binaries/scripts         |  |  - xdg-config, xdg-data,    |  |
+|  |  - Immutable system layer   |  |    xdg-cache                |  |
+|  |  - No mutable user state    |  |  - apps/ (AppImages/extras) |  |
+|  |                             |  |  - docs/, books/, src/      |  |
+|  +-----------------------------+  +-----------------------------+  |
++-------------------------------------------------------------------+
+```
+
+### 🗂️ 2. Repository & Delivery Topology
+
+```text
+piccolo-ax-desktop/
+├── LICENSE
+├── README.md
+├── topology.md
+├── profiles/
+│   ├── desktop-core.mk
+│   └── desktop-heavy.mk
+├── overlays/
+│   └── common/
+│       └── etc/
+│           └── profile.d/
+│               └── ax-desktop-xdg.sh
+├── scripts/
+│   ├── launch-desktop.sh
+│   ├── launch-falkon.sh
+│   └── stage-share-apps.sh
+├── buildroot/
+│   └── README.md
+└── docs/
+    └── packages.md
+```
+
+### 🛡️ 3. Boundary Invariants
+
+* **No background bleed into Appliance Mode:** Default appliance boots must not start desktop shells, browser engines, or batch transcoders.
+* **No user bloat in the read-only OS layer:** Profiles, caches, documents, ebooks/comics, local `git` repos, and optional AppImages live under `SHARE` (`${AX_SHARE_ROOT:-/userdata}/desktop`).
+* **Bootloader stays decoupled until validated:** Boot menu entries (`grub.cfg` / session flags) are added only after session startup and `SHARE` persistence are proven on hardware.
+
 ## 🏗️ Part 2: Architecture Design
 
 ### 🎯 1. Architectural Goals & Non-Goals
