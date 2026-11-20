@@ -6,7 +6,7 @@
 
 | Tier | Profile File | Included Software | Default Delivery | Rationale |
 | :--- | :--- | :--- | :--- | :--- |
-| **Tier A (Core)** | `profiles/desktop-core.mk` | `LXQt` (default) or `XFCE` (X11), **Falkon**, **AbiWord**, **Gnumeric**, **Foliate**, lightweight PDF viewer (`qpdfview` / `MuPDF` / `Atril`), `git`, terminal & archive tools | Rootfs (`package`) | Lightweight C++/GTK utilities essential for local browsing, document editing, reading, and repository maintenance without background daemons. |
+| **Tier A (Core)** | `profiles/desktop-core.mk` | `LXQt` (default) or `XFCE` (X11), **Falkon**, **AbiWord**, **Gnumeric**, **Foliate**, lightweight PDF viewer (`qpdfview` / `MuPDF` / `Atril`), **mtPaint**, **GrafX2**, **AzPainter**, **LibreSprite**, `git`, terminal & archive tools | Rootfs (`package`) | Lightweight C/C++ utilities (< 30 MB total for the 2D/pixel graphics suite) essential for local browsing, document editing, reading, pixel/vector illustration, and repository maintenance without background daemons. |
 | **Tier B (Heavy)** | `profiles/desktop-heavy.mk` | **GIMP**, **Krita**, **Shotcut**, **HandBrake** | `appimage-share` (or opt-in `package`) | Large binaries and media toolchains kept out of the core appliance image by default to preserve fast `toram` EROFS boot budgets. |
 
 ## Delivery Mode Trade-Offs (`appimage-share` vs. `package`)
@@ -21,4 +21,4 @@
 ## Licensing & Upstream Attribution
 
 * **Repository License:** All Buildroot profiles, overlay scripts, launch wrappers, and documentation in `piccolo-ax-desktop` are licensed under **GNU General Public License v3.0 (`GPLv3`)** to match the `Piccolo-AX` appliance stack.
-* **Upstream Components:** Packaged applications and staged AppImages retain their respective upstream open-source licenses (including `GPLv2`/`GPLv3` for `GIMP`, `Krita`, `Shotcut`, `HandBrake`, `AbiWord`, `Gnumeric`, `Foliate`, and `Falkon`, and `LGPLv2.1+` for `LXQt` libraries). When distributing binary images or bundled `SHARE` archives, retain upstream license texts and source-offer compliance per `GPLv3` requirements.
+* **Upstream Components:** Packaged applications and staged AppImages retain their respective upstream open-source licenses (including `GPLv2`/`GPLv3` for `GIMP`, `Krita`, `Shotcut`, `HandBrake`, `AbiWord`, `Gnumeric`, `Foliate`, `Falkon`, `mtPaint`, `GrafX2`, `AzPainter`, and `LibreSprite`, and `LGPLv2.1+` for `LXQt` libraries). When distributing binary images or bundled `SHARE` archives, retain upstream license texts and source-offer compliance per `GPLv3` requirements.
