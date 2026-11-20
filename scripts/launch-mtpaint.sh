@@ -5,7 +5,7 @@
 set -eu
 
 SHARE_ROOT="${AX_SHARE_ROOT:-/userdata}"
-MTPAINT_CFG_DIR="${SHARE_ROOT}/desktop/config/mtpaint"
+MTPAINT_CFG_DIR="${XDG_CONFIG_HOME:-${SHARE_ROOT}/desktop/xdg-config}/mtpaint"
 mkdir -p "${MTPAINT_CFG_DIR}"
 
 exec /usr/bin/mtpaint --config="${MTPAINT_CFG_DIR}/mtpaint.ini" "$@"
