@@ -47,6 +47,7 @@ The topology of `piccolo-ax-desktop` enforces strict boundaries along **three di
 piccolo-ax-desktop/
 ├── LICENSE
 ├── README.md
+├── topology.md
 ├── profiles/
 │   ├── desktop-core.mk
 │   └── desktop-heavy.mk
@@ -62,7 +63,6 @@ piccolo-ax-desktop/
 ├── buildroot/
 │   └── README.md
 └── docs/
-    ├── topology.md
     └── packages.md
 ```
 
