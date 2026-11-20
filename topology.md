@@ -1,4 +1,4 @@
-# 🗺️ Topology & Architecture Design (`docs/topology.md`)
+# 🗺️ Topology & Architecture Design
 
 The topology of `piccolo-ax-desktop` enforces strict boundaries along **three dimensions**: compute/real-time isolation, storage (`EROFS` vs. `SHARE`), and package tiers (Core vs. Heavy).
 
