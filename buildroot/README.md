@@ -15,7 +15,7 @@ External Buildroot trees (`batocera-ax-external` / `Piccolo-AX`) consume this re
    - Register `overlays/common` in `BR2_ROOTFS_OVERLAY` for desktop-enabled targets. This installs `/etc/profile.d/ax-desktop-xdg.sh` into the read-only EROFS rootfs.
 4. **Launcher & Staging Scripts (`scripts/`):**
    - Install `scripts/launch-desktop.sh`, `scripts/launch-falkon.sh`, and `scripts/stage-share-apps.sh` into `/usr/local/bin/` (or `/usr/bin/`) with `0755` permissions during target rootfs assembly.
-   - Install `scripts/launch-mtpaint.sh` as `/usr/local/bin/mtpaint` (`0755`) so `mtPaint` persists its configuration to `${AX_SHARE_ROOT:-/userdata}/desktop/config/mtpaint/mtpaint.ini` rather than attempting to write `~/.mtpaint` on the read-only rootfs.
+   - Install `scripts/launch-mtpaint.sh` as `/usr/local/bin/mtpaint` (`0755`) so `mtPaint` persists its configuration to `${AX_SHARE_ROOT:-/userdata}/desktop/xdg-config/mtpaint/mtpaint.ini` rather than attempting to write `~/.mtpaint` on the read-only rootfs.
 
 ## Boundary Rules for Build Integration
 
