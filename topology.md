@@ -89,7 +89,7 @@ piccolo-ax-desktop/
 ### 🎯 1. Architectural Goals & Non-Goals
 
 #### Goals
-* Provide a clean, predictable general-purpose environment for browsing documentation, working with lightweight documents/spreadsheets, reading EPUB/CBZ/PDF files, and managing local `git` repositories.
+* Provide a clean, predictable general-purpose environment for browsing documentation, working with lightweight documents/spreadsheets, reading EPUB/CBZ/PDF files, creating 2D/pixel artwork, and managing local `git` repositories.
 * Preserve deterministic behavior and clean resource release when running the real-time **Piccolo-AX** appliance stack.
 * Keep the core desktop lean by separating high-footprint creative and transcoding tools into an opt-in tier.
 
@@ -108,6 +108,7 @@ Always present when Desktop Mode is selected, covering everyday lightweight task
 * **Browser:** **Falkon** (C++/Qt browser with built-in ad blocking; supports both full desktop usage and a dedicated direct-launch path)
 * **Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet)
 * **Reading:** **Foliate** (EPUB/CBZ/ebooks) paired with a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`)
+* **2D & Pixel Graphics (< 30 MB total):** **mtPaint** (indexed palette & dithering), **GrafX2** (*Deluxe Paint*-style pixel art), **AzPainter** (16-bit full-color illustration & layers), and **LibreSprite** (animated sprite sheets)
 * **CLI & File Utilities:** `git`, terminal emulator, and archive tools
 
 #### Tier B — Optional Heavy Tier (`profiles/desktop-heavy.mk`)
@@ -123,14 +124,16 @@ Opt-in tools with larger binary, dependency, or runtime footprints (`GIMP`, `Kri
 
 1. **Environment Initialization (`overlays/common/etc/profile.d/ax-desktop-xdg.sh`):**
    * Resolves `AX_SHARE_ROOT` (defaulting to `/userdata`) and sets `AX_DESKTOP_ROOT="${AX_SHARE_ROOT}/desktop"`
-   * Exports `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, and `XDG_CACHE_HOME` under `${AX_DESKTOP_ROOT}` so desktop configs, application state, and caches stay persistent and isolated from the read-only rootfs
+   * Exports `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, and `XDG_CACHE_HOME` under `${AX_DESKTOP_ROOT}` so desktop configs (`GrafX2`, `AzPainter`, `LibreSprite`, etc.), application state, and caches stay persistent and isolated from the read-only rootfs
    * Creates standard subdirectories (`xdg-config`, `xdg-data`, `xdg-cache`, `apps`, `docs`, `books`, `src`) when `SHARE` is present
-2. **Desktop Session Launch (`scripts/launch-desktop.sh`):**
+2. **Legacy Dotfile Redirection (`scripts/launch-mtpaint.sh`):**
+   * Installed as `/usr/local/bin/mtpaint` (`0755`) so `mtPaint` writes its configuration to `${XDG_CONFIG_HOME:-${AX_DESKTOP_ROOT}/xdg-config}/mtpaint/mtpaint.ini` instead of attempting to write `~/.mtpaint` on the read-only rootfs
+3. **Desktop Session Launch (`scripts/launch-desktop.sh`):**
    * Sources `/etc/profile.d/ax-desktop-xdg.sh` (falling back to the repo overlay during local testing)
    * Selects the configured desktop session (`AX_DESKTOP_SESSION`: `lxqt` or `xfce`) and hands off cleanly via `exec`
-3. **Direct-to-Falkon Launch (`scripts/launch-falkon.sh`):**
+4. **Direct-to-Falkon Launch (`scripts/launch-falkon.sh`):**
    * Supports launching **Falkon** directly for a focused browser flow while ensuring XDG/`SHARE` paths are initialized and avoiding root-user sandbox pitfalls typical of Chromium/QtWebEngine runtimes
-4. **Optional `SHARE` Staging (`scripts/stage-share-apps.sh`):**
+5. **Optional `SHARE` Staging (`scripts/stage-share-apps.sh`):**
    * Prepares `${AX_DESKTOP_ROOT}/apps` and validates/stages optional AppImages or local user tools without altering read-only OS files
 
 ---
@@ -138,4 +141,4 @@ Opt-in tools with larger binary, dependency, or runtime footprints (`GIMP`, `Kri
 ### ⚖️ 4. Licensing & Governance (GPLv3)
 
 * Repository-authored scripts, make/profile definitions, overlays, and documentation in `piccolo-ax-desktop` are licensed under **GNU General Public License v3.0 (GPLv3)**, aligning with **Piccolo-AX**
-* Upstream packages and optional tools (such as `LXQt`, `XFCE`, `Falkon`, `AbiWord`, `Gnumeric`, `Foliate`, PDF viewers, `GIMP`, `Krita`, `Shotcut`, and `HandBrake`) retain their own upstream licenses, documented in `docs/packages.md`
+* Upstream packages and optional tools (such as `LXQt`, `XFCE`, `Falkon`, `AbiWord`, `Gnumeric`, `Foliate`, PDF viewers, `mtPaint`, `GrafX2`, `AzPainter`, `LibreSprite`, `GIMP`, `Krita`, `Shotcut`, and `HandBrake`) retain their own upstream licenses, documented in `docs/packages.md`
