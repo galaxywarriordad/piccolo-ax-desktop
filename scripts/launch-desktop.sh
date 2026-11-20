@@ -1,29 +1,36 @@
-#!/usr/bin/env sh
+#!/bin/sh
 set -eu
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-REPO_ROOT="$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/.." && pwd)"
 
 # Load SHARE XDG environment if present
 if [ -r /etc/profile.d/ax-desktop-xdg.sh ]; then
-    # shellcheck disable=SC1091
+    # shellcheck source=/dev/null
     . /etc/profile.d/ax-desktop-xdg.sh
-elif [ -r "$REPO_ROOT/overlays/common/etc/profile.d/ax-desktop-xdg.sh" ]; then
-    # shellcheck disable=SC1091
-    . "$REPO_ROOT/overlays/common/etc/profile.d/ax-desktop-xdg.sh"
+elif [ -r "${REPO_ROOT}/overlays/common/etc/profile.d/ax-desktop-xdg.sh" ]; then
+    # shellcheck source=/dev/null
+    . "${REPO_ROOT}/overlays/common/etc/profile.d/ax-desktop-xdg.sh"
 fi
 
 SESSION="${AX_DESKTOP_SESSION:-lxqt}"
 
-case "$SESSION" in
+case "${SESSION}" in
     lxqt)
-        exec startlxqt
+        SESSION_BIN="startlxqt"
         ;;
-    xfce|xfce4)
-        exec startxfce4
+    xfce)
+        SESSION_BIN="startxfce4"
         ;;
     *)
-        echo "Unsupported AX_DESKTOP_SESSION: $SESSION (expected 'lxqt' or 'xfce')" >&2
+        printf 'Unsupported AX_DESKTOP_SESSION: %s (expected "lxqt" or "xfce")\n' "${SESSION}" >&2
         exit 1
         ;;
 esac
+
+if ! command -v "${SESSION_BIN}" >/dev/null 2>&1; then
+    printf 'Error: %s is not installed or not in PATH.\n' "${SESSION_BIN}" >&2
+    exit 127
+fi
+
+exec "${SESSION_BIN}" "$@"
