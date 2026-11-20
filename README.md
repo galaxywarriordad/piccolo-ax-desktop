@@ -31,6 +31,7 @@ Opt-in install selections or `SHARE`-staged tools/AppImages kept out of the core
 piccolo-ax-desktop/
 ├── LICENSE
 ├── README.md
+├── topology.md
 ├── profiles/
 │   ├── desktop-core.mk
 │   └── desktop-heavy.mk
@@ -46,5 +47,5 @@ piccolo-ax-desktop/
 ├── buildroot/
 │   └── README.md
 └── docs/
-    ├── topology.md
     └── packages.md
+```
