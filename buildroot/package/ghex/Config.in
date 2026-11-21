@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GHEX
+	bool "ghex"
+	depends on BR2_PACKAGE_LIBGTK3
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Lightweight GTK3 hex and binary editor for inspecting
+	  ROM headers, save states, and raw binary files.
+
+	  https://github.com/GNOME/ghex.git
