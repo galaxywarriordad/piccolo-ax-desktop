@@ -8,3 +8,9 @@ config BR2_PACKAGE_GHEX
 	  ROM headers, save states, and raw binary files.
 
 	  https://github.com/GNOME/ghex.git
+menu "Piccolo-AX Desktop Custom Packages"
+	source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/azpainter/Config.in"
+	source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/libresprite/Config.in"
+	source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/ghex/Config.in"
+	source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/cpu-x/Config.in"
+endmenu
