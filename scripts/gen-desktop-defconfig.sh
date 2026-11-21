@@ -8,7 +8,6 @@ SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 REPO_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/.." && pwd)"
 OUT_FILE="${1:-${REPO_ROOT}/buildroot/piccolo-ax-desktop.fragment}"
 
-# Helper to read Makefile `VAR ?= val` defaults while allowing env overrides
 read_mk_var() {
     var_name="$1"
     mk_file="$2"
@@ -27,7 +26,6 @@ read_mk_var() {
 }
 
 CORE_MK="${REPO_ROOT}/profiles/desktop-core.mk"
-HEAVY_MK="${REPO_ROOT}/profiles/desktop-heavy.mk"
 
 AX_DESKTOP_CORE_ENABLED="$(read_mk_var AX_DESKTOP_CORE_ENABLED "${CORE_MK}")"
 if [ "${AX_DESKTOP_CORE_ENABLED}" != "y" ]; then
@@ -40,10 +38,18 @@ AX_PKG_FALKON="$(read_mk_var AX_PKG_FALKON "${CORE_MK}")"
 AX_PKG_ABIWORD="$(read_mk_var AX_PKG_ABIWORD "${CORE_MK}")"
 AX_PKG_GNUMERIC="$(read_mk_var AX_PKG_GNUMERIC "${CORE_MK}")"
 AX_PKG_FOLIATE="$(read_mk_var AX_PKG_FOLIATE "${CORE_MK}")"
+
 AX_PKG_MTPAINT="$(read_mk_var AX_PKG_MTPAINT "${CORE_MK}")"
 AX_PKG_GRAFX2="$(read_mk_var AX_PKG_GRAFX2 "${CORE_MK}")"
 AX_PKG_AZPAINTER="$(read_mk_var AX_PKG_AZPAINTER "${CORE_MK}")"
 AX_PKG_LIBRESPRITE="$(read_mk_var AX_PKG_LIBRESPRITE "${CORE_MK}")"
+
+AX_PKG_GHEX="$(read_mk_var AX_PKG_GHEX "${CORE_MK}")"
+AX_PKG_FEH="$(read_mk_var AX_PKG_FEH "${CORE_MK}")"
+AX_PKG_SCROT="$(read_mk_var AX_PKG_SCROT "${CORE_MK}")"
+AX_PKG_CPUX="$(read_mk_var AX_PKG_CPUX "${CORE_MK}")"
+AX_PKG_NVTOP="$(read_mk_var AX_PKG_NVTOP "${CORE_MK}")"
+
 AX_DESKTOP_PDF_VIEWER="$(read_mk_var AX_DESKTOP_PDF_VIEWER "${CORE_MK}")"
 AX_PKG_GIT="$(read_mk_var AX_PKG_GIT "${CORE_MK}")"
 AX_PKG_TERMINAL="$(read_mk_var AX_PKG_TERMINAL "${CORE_MK}")"
@@ -53,6 +59,7 @@ AX_DESKTOP_HEAVY_GIMP="$(read_mk_var AX_DESKTOP_HEAVY_GIMP "${CORE_MK}")"
 AX_DESKTOP_HEAVY_KRITA="$(read_mk_var AX_DESKTOP_HEAVY_KRITA "${CORE_MK}")"
 AX_DESKTOP_HEAVY_SHOTCUT="$(read_mk_var AX_DESKTOP_HEAVY_SHOTCUT "${CORE_MK}")"
 AX_DESKTOP_HEAVY_HANDBRAKE="$(read_mk_var AX_DESKTOP_HEAVY_HANDBRAKE "${CORE_MK}")"
+AX_DESKTOP_HEAVY_KEEPASSXC="$(read_mk_var AX_DESKTOP_HEAVY_KEEPASSXC "${CORE_MK}")"
 
 mkdir -p "$(dirname -- "${OUT_FILE}")"
 
@@ -102,6 +109,15 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
     [ "${AX_PKG_LIBRESPRITE}" = "y" ] && printf 'BR2_PACKAGE_LIBRESPRITE=y\n'
     printf '\n'
 
+    # Binary Inspection, Viewer, Screenshot & Silicon Diagnostics
+    printf '# Inspection, Viewer & Diagnostics\n'
+    [ "${AX_PKG_GHEX}" = "y" ]  && printf 'BR2_PACKAGE_GHEX=y\n'
+    [ "${AX_PKG_FEH}" = "y" ]   && printf 'BR2_PACKAGE_FEH=y\n'
+    [ "${AX_PKG_SCROT}" = "y" ] && printf 'BR2_PACKAGE_SCROT=y\n'
+    [ "${AX_PKG_CPUX}" = "y" ]  && printf 'BR2_PACKAGE_CPU_X=y\n'
+    [ "${AX_PKG_NVTOP}" = "y" ] && printf 'BR2_PACKAGE_NVTOP=y\n'
+    printf '\n'
+
     # Developer & Archive Utilities
     printf '# CLI & Archive Tools\n'
     [ "${AX_PKG_GIT}" = "y" ] && printf 'BR2_PACKAGE_GIT=y\n'
@@ -140,6 +156,11 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
         printf 'BR2_PACKAGE_HANDBRAKE=y\n'
     else
         printf '# BR2_PACKAGE_HANDBRAKE is not set\n'
+    fi
+    if [ "${AX_DESKTOP_HEAVY_KEEPASSXC}" = "y" ]; then
+        printf 'BR2_PACKAGE_KEEPASSXC=y\n'
+    else
+        printf '# BR2_PACKAGE_KEEPASSXC is not set\n'
     fi
 } > "${OUT_FILE}"
 
