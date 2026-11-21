@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PICCOLO_AX_DESKTOP
+	bool "Piccolo-AX Desktop Mode (Tier A Core)"
+	help
+	  Enables the decoupled piccolo-ax-desktop layer (LXQt/XFCE,
+	  Falkon, office, readers, and 2D/pixel graphics suite).
+
+if BR2_PACKAGE_PICCOLO_AX_DESKTOP
+source "$(BR2_EXTERNAL_PICCOLO_AX_PATH)/../piccolo-ax-desktop/buildroot/Config.in"
+endif
