@@ -7,4 +7,4 @@ config BR2_PACKAGE_GHEX
 	  Lightweight GTK3 hex and binary editor for inspecting
 	  ROM headers, save states, and raw binary files.
 
-	  https://gnome.org
+	  https://github.com/GNOME/ghex.git
