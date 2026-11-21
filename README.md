@@ -56,11 +56,20 @@ piccolo-ax-desktop/
 │           └── profile.d/
 │               └── ax-desktop-xdg.sh
 ├── scripts/
+│   ├── gen-desktop-defconfig.sh
 │   ├── launch-desktop.sh
 │   ├── launch-falkon.sh
+│   ├── launch-mtpaint.sh
 │   └── stage-share-apps.sh
 ├── buildroot/
-│   └── README.md
+│   ├── Config.in
+│   ├── README.md
+│   └── package/
+│       ├── azpainter/
+│       ├── cpu-x/
+│       ├── ghex/
+│       └── libresprite/
 └── docs/
     └── packages.md
+
 ```
