@@ -10,7 +10,13 @@ if [ -z "${XDG_CONFIG_HOME:-}" ] && [ -r /etc/profile.d/ax-desktop-xdg.sh ]; the
 fi
 
 SHARE_ROOT="${AX_SHARE_ROOT:-/userdata}"
-MTPAINT_CFG_DIR="${XDG_CONFIG_HOME:-${SHARE_ROOT}/desktop/xdg-config}/mtpaint"
+
+if [ -d "${SHARE_ROOT}" ] && [ -w "${SHARE_ROOT}" ]; then
+    MTPAINT_CFG_DIR="${XDG_CONFIG_HOME:-${SHARE_ROOT}/desktop/xdg-config}/mtpaint"
+else
+    MTPAINT_CFG_DIR="/tmp/ax-desktop-mtpaint"
+fi
+
 mkdir -p "${MTPAINT_CFG_DIR}"
 
 exec /usr/bin/mtpaint --config="${MTPAINT_CFG_DIR}/mtpaint.ini" "$@"
