@@ -40,6 +40,7 @@ fi
 AX_DESKTOP_SESSION="$(read_mk_var AX_DESKTOP_SESSION "${CORE_MK}")"
 AX_PKG_PCMANFM_QT="$(read_mk_var AX_PKG_PCMANFM_QT "${CORE_MK}")"
 AX_PKG_WORKER="$(read_mk_var AX_PKG_WORKER "${CORE_MK}")"
+AX_PKG_LXQT_ARCHIVER="$(read_mk_var AX_PKG_LXQT_ARCHIVER "${CORE_MK}")"
 
 AX_PKG_FALKON="$(read_mk_var AX_PKG_FALKON "${CORE_MK}")"
 AX_PKG_ABIWORD="$(read_mk_var AX_PKG_ABIWORD "${CORE_MK}")"
@@ -55,12 +56,15 @@ AX_PKG_LIBRESPRITE="$(read_mk_var AX_PKG_LIBRESPRITE "${CORE_MK}")"
 
 AX_PKG_MILKYTRACKER="$(read_mk_var AX_PKG_MILKYTRACKER "${CORE_MK}")"
 AX_PKG_MHWAVEEDIT="$(read_mk_var AX_PKG_MHWAVEEDIT "${CORE_MK}")"
+AX_PKG_QASMIXER="$(read_mk_var AX_PKG_QASMIXER "${CORE_MK}")"
 
 AX_PKG_GHEX="$(read_mk_var AX_PKG_GHEX "${CORE_MK}")"
 AX_PKG_FEH="$(read_mk_var AX_PKG_FEH "${CORE_MK}")"
 AX_PKG_SCROT="$(read_mk_var AX_PKG_SCROT "${CORE_MK}")"
+AX_PKG_QALCULATE_QT="$(read_mk_var AX_PKG_QALCULATE_QT "${CORE_MK}")"
 AX_PKG_CPUX="$(read_mk_var AX_PKG_CPUX "${CORE_MK}")"
 AX_PKG_NVTOP="$(read_mk_var AX_PKG_NVTOP "${CORE_MK}")"
+AX_PKG_HTOP="$(read_mk_var AX_PKG_HTOP "${CORE_MK}")"
 
 AX_DESKTOP_PDF_VIEWER="$(read_mk_var AX_DESKTOP_PDF_VIEWER "${CORE_MK}")"
 AX_PKG_GIT="$(read_mk_var AX_PKG_GIT "${CORE_MK}")"
@@ -110,8 +114,9 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
             exit 1
             ;;
     esac
-    [ "${AX_PKG_PCMANFM_QT}" = "y" ] && printf 'BR2_PACKAGE_PCMANFM_QT=y\n'
-    [ "${AX_PKG_WORKER}" = "y" ]     && printf 'BR2_PACKAGE_WORKER=y\n'
+    [ "${AX_PKG_PCMANFM_QT}" = "y" ]    && printf 'BR2_PACKAGE_PCMANFM_QT=y\n'
+    [ "${AX_PKG_WORKER}" = "y" ]        && printf 'BR2_PACKAGE_WORKER=y\n'
+    [ "${AX_PKG_LXQT_ARCHIVER}" = "y" ] && printf 'BR2_PACKAGE_LXQT_ARCHIVER=y\n'
     printf '# BR2_PACKAGE_SDDM is not set\n'
     printf '# BR2_PACKAGE_LIGHTDM is not set\n\n'
 
@@ -147,15 +152,18 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
     printf '# Classic Tracker & Audio Tools\n'
     [ "${AX_PKG_MILKYTRACKER}" = "y" ] && printf 'BR2_PACKAGE_MILKYTRACKER=y\n'
     [ "${AX_PKG_MHWAVEEDIT}" = "y" ]   && printf 'BR2_PACKAGE_MHWAVEEDIT=y\n'
+    [ "${AX_PKG_QASMIXER}" = "y" ]     && printf 'BR2_PACKAGE_QASMIXER=y\n'
     printf '\n'
 
-    # Binary Inspection, Viewer, Screenshot & Silicon Diagnostics
-    printf '# Inspection, Viewer & Diagnostics\n'
-    [ "${AX_PKG_GHEX}" = "y" ]  && printf 'BR2_PACKAGE_GHEX=y\n'
-    [ "${AX_PKG_FEH}" = "y" ]   && printf 'BR2_PACKAGE_FEH=y\n'
-    [ "${AX_PKG_SCROT}" = "y" ] && printf 'BR2_PACKAGE_SCROT=y\n'
-    [ "${AX_PKG_CPUX}" = "y" ]  && printf 'BR2_PACKAGE_CPU_X=y\n'
-    [ "${AX_PKG_NVTOP}" = "y" ] && printf 'BR2_PACKAGE_NVTOP=y\n'
+    # Binary Inspection, Viewer, Screenshot, Calculator & Diagnostics
+    printf '# Inspection, Viewer, Calculator & Diagnostics\n'
+    [ "${AX_PKG_GHEX}" = "y" ]         && printf 'BR2_PACKAGE_GHEX=y\n'
+    [ "${AX_PKG_FEH}" = "y" ]          && printf 'BR2_PACKAGE_FEH=y\n'
+    [ "${AX_PKG_SCROT}" = "y" ]        && printf 'BR2_PACKAGE_SCROT=y\n'
+    [ "${AX_PKG_QALCULATE_QT}" = "y" ] && printf 'BR2_PACKAGE_QALCULATE_QT=y\n'
+    [ "${AX_PKG_CPUX}" = "y" ]         && printf 'BR2_PACKAGE_CPU_X=y\n'
+    [ "${AX_PKG_NVTOP}" = "y" ]        && printf 'BR2_PACKAGE_NVTOP=y\n'
+    [ "${AX_PKG_HTOP}" = "y" ]         && printf 'BR2_PACKAGE_HTOP=y\n'
     printf '\n'
 
     # Developer, Archive, Diff/Patch/Search, X11 & Editor Utilities
