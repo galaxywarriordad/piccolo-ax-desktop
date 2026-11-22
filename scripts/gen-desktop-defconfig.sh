@@ -16,16 +16,19 @@ read_mk_var() {
         printf '%s\n' "${current_val}"
         return
     fi
-    awk -F'[?]?=' -v key="${var_name}" '
-        $1 ~ "^[[:space:]]*" key "[[:space:]]*$" {
-            gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2)
-            print $2
-            exit
-        }
-    ' "${mk_file}"
+    if [ -r "${mk_file}" ]; then
+        awk -F'[?]?=' -v key="${var_name}" '
+            $1 ~ "^[[:space:]]*" key "[[:space:]]*$" {
+                gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2)
+                print $2
+                exit
+            }
+        ' "${mk_file}"
+    fi
 }
 
 CORE_MK="${REPO_ROOT}/profiles/desktop-core.mk"
+HEAVY_MK="${REPO_ROOT}/profiles/desktop-heavy.mk"
 
 AX_DESKTOP_CORE_ENABLED="$(read_mk_var AX_DESKTOP_CORE_ENABLED "${CORE_MK}")"
 if [ "${AX_DESKTOP_CORE_ENABLED}" != "y" ]; then
@@ -33,6 +36,7 @@ if [ "${AX_DESKTOP_CORE_ENABLED}" != "y" ]; then
     exit 0
 fi
 
+# Tier A (Core) settings
 AX_DESKTOP_SESSION="$(read_mk_var AX_DESKTOP_SESSION "${CORE_MK}")"
 AX_PKG_FALKON="$(read_mk_var AX_PKG_FALKON "${CORE_MK}")"
 AX_PKG_ABIWORD="$(read_mk_var AX_PKG_ABIWORD "${CORE_MK}")"
@@ -60,16 +64,26 @@ AX_PKG_DEV_TEXT_TOOLS="$(read_mk_var AX_PKG_DEV_TEXT_TOOLS "${CORE_MK}")"
 AX_PKG_X11_HELPERS="$(read_mk_var AX_PKG_X11_HELPERS "${CORE_MK}")"
 AX_PKG_TEXT_EDITOR="$(read_mk_var AX_PKG_TEXT_EDITOR "${CORE_MK}")"
 
-AX_DESKTOP_HEAVY_GIMP="$(read_mk_var AX_DESKTOP_HEAVY_GIMP "${CORE_MK}")"
-AX_DESKTOP_HEAVY_KRITA="$(read_mk_var AX_DESKTOP_HEAVY_KRITA "${CORE_MK}")"
-AX_DESKTOP_HEAVY_SHOTCUT="$(read_mk_var AX_DESKTOP_HEAVY_SHOTCUT "${CORE_MK}")"
-AX_DESKTOP_HEAVY_HANDBRAKE="$(read_mk_var AX_DESKTOP_HEAVY_HANDBRAKE "${CORE_MK}")"
-AX_DESKTOP_HEAVY_KEEPASSXC="$(read_mk_var AX_DESKTOP_HEAVY_KEEPASSXC "${CORE_MK}")"
+# Tier B (Optional Heavy) settings — read heavy.mk with core.mk fallback
+AX_DESKTOP_HEAVY_ENABLED="$(read_mk_var AX_DESKTOP_HEAVY_ENABLED "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_DELIVERY="$(read_mk_var AX_DESKTOP_HEAVY_DELIVERY "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_GIMP="$(read_mk_var AX_DESKTOP_HEAVY_GIMP "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_KRITA="$(read_mk_var AX_DESKTOP_HEAVY_KRITA "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_SHOTCUT="$(read_mk_var AX_DESKTOP_HEAVY_SHOTCUT "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_KDENLIVE="$(read_mk_var AX_DESKTOP_HEAVY_KDENLIVE "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_HANDBRAKE="$(read_mk_var AX_DESKTOP_HEAVY_HANDBRAKE "${HEAVY_MK}")"
+AX_DESKTOP_HEAVY_KEEPASSXC="$(read_mk_var AX_DESKTOP_HEAVY_KEEPASSXC "${HEAVY_MK}")"
+
+heavy_pkg_active() {
+    [ "${AX_DESKTOP_HEAVY_ENABLED}" = "y" ] && \
+    [ "${AX_DESKTOP_HEAVY_DELIVERY}" = "package" ] && \
+    [ "$1" = "y" ]
+}
 
 mkdir -p "$(dirname -- "${OUT_FILE}")"
 
 {
-    printf '# Auto-generated from piccolo-ax-desktop/profiles/desktop-core.mk\n'
+    printf '# Auto-generated from piccolo-ax-desktop/profiles/*.mk\n'
     printf 'BR2_PACKAGE_PICCOLO_AX_DESKTOP=y\n'
     printf 'BR2_PACKAGE_XORG7=y\n\n'
 
@@ -105,6 +119,10 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
         qpdfview) printf 'BR2_PACKAGE_QPDFVIEW=y\n' ;;
         mupdf)    printf 'BR2_PACKAGE_MUPDF=y\n' ;;
         atril)    printf 'BR2_PACKAGE_ATRIL=y\n' ;;
+        *)
+            printf 'Unsupported AX_DESKTOP_PDF_VIEWER: %s\n' "${AX_DESKTOP_PDF_VIEWER}" >&2
+            exit 1
+            ;;
     esac
     printf '\n'
 
@@ -156,29 +174,34 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
     fi
     printf '\n'
 
-    # Heavy Tier Guardrails
-    printf '# Heavy Tier Guardrails\n'
-    if [ "${AX_DESKTOP_HEAVY_GIMP}" = "y" ]; then
+    # Heavy Tier Guardrails (Tier B)
+    printf '# Heavy Tier Guardrails (delivery=%s)\n' "${AX_DESKTOP_HEAVY_DELIVERY}"
+    if heavy_pkg_active "${AX_DESKTOP_HEAVY_GIMP}"; then
         printf 'BR2_PACKAGE_GIMP=y\n'
     else
         printf '# BR2_PACKAGE_GIMP is not set\n'
     fi
-    if [ "${AX_DESKTOP_HEAVY_KRITA}" = "y" ]; then
+    if heavy_pkg_active "${AX_DESKTOP_HEAVY_KRITA}"; then
         printf 'BR2_PACKAGE_KRITA=y\n'
     else
         printf '# BR2_PACKAGE_KRITA is not set\n'
     fi
-    if [ "${AX_DESKTOP_HEAVY_SHOTCUT}" = "y" ]; then
+    if heavy_pkg_active "${AX_DESKTOP_HEAVY_SHOTCUT}"; then
         printf 'BR2_PACKAGE_SHOTCUT=y\n'
     else
         printf '# BR2_PACKAGE_SHOTCUT is not set\n'
     fi
-    if [ "${AX_DESKTOP_HEAVY_HANDBRAKE}" = "y" ]; then
+    if heavy_pkg_active "${AX_DESKTOP_HEAVY_KDENLIVE}"; then
+        printf 'BR2_PACKAGE_KDENLIVE=y\n'
+    else
+        printf '# BR2_PACKAGE_KDENLIVE is not set\n'
+    fi
+    if heavy_pkg_active "${AX_DESKTOP_HEAVY_HANDBRAKE}"; then
         printf 'BR2_PACKAGE_HANDBRAKE=y\n'
     else
         printf '# BR2_PACKAGE_HANDBRAKE is not set\n'
     fi
-    if [ "${AX_DESKTOP_HEAVY_KEEPASSXC}" = "y" ]; then
+    if heavy_pkg_active "${AX_DESKTOP_HEAVY_KEEPASSXC}"; then
         printf 'BR2_PACKAGE_KEEPASSXC=y\n'
     else
         printf '# BR2_PACKAGE_KEEPASSXC is not set\n'
