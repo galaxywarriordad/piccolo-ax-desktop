@@ -1,6 +1,8 @@
 config BR2_PACKAGE_AZPAINTER
 	bool "azpainter"
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXI
@@ -14,4 +16,7 @@ config BR2_PACKAGE_AZPAINTER
 	  Lightweight 16-bit full-color illustration and painting
 	  application for Linux/X11.
 
-	  https://gitlab.com/azelpg/azpainter.git
+	  https://gitlab.com/azelpg/azpainter
+
+comment "azpainter needs X.org and a toolchain w/ wchar, threads"
+	depends on !BR2_PACKAGE_XORG7 || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
