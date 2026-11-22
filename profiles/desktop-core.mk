@@ -1,6 +1,7 @@
 # piccolo-ax-desktop/profiles/desktop-core.mk
 # Core Desktop profile (Tier A): lightweight session, Falkon, office, readers,
-# 2D/pixel graphics, binary inspection, and silicon diagnostics.
+# fullscreen media/YouTube playback, 2D/pixel graphics, binary inspection,
+# and silicon diagnostics.
 # Excludes heavy creative/transcoding/security suites (see profiles/desktop-heavy.mk).
 
 AX_DESKTOP_CORE_ENABLED ?= y
@@ -13,6 +14,10 @@ AX_PKG_FALKON ?= y
 AX_PKG_ABIWORD ?= y
 AX_PKG_GNUMERIC ?= y
 AX_PKG_FOLIATE ?= y
+
+# Fullscreen media & YouTube playback (paired with overlays/common/etc/mpv/mpv.conf and scripts/launch-yt.sh)
+AX_PKG_MPV ?= y
+AX_PKG_YTDLP ?= y
 
 # Core 2D & pixel graphics suite (< 30 MB total)
 AX_PKG_MTPAINT ?= y
