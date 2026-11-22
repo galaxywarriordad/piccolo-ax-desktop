@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBRESPRITE_VERSION = v1.2
-LIBRESPRITE_SITE = https://github.com/LibreSprite/LibreSprite
+LIBRESPRITE_SITE = https://github.com/LibreSprite/LibreSprite.git
 LIBRESPRITE_SITE_METHOD = git
 LIBRESPRITE_GIT_SUBMODULES = YES
 LIBRESPRITE_LICENSE = GPL-2.0
@@ -25,7 +25,6 @@ LIBRESPRITE_DEPENDENCIES = \
 	libcurl
 
 LIBRESPRITE_CONF_OPTS = \
-	-DCMAKE_BUILD_TYPE=Release \
 	-DWITH_DESKTOP_INTEGRATION=ON \
 	-DWITH_WEBP_SUPPORT=OFF \
 	-DENABLE_UPDATER=OFF \
