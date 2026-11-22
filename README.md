@@ -1,88 +1,32 @@
 # 🖥️ piccolo-ax-desktop
 
-Lightweight, local-first desktop mode for **Piccolo-AX**, designed to give users and developers a clean general-purpose escape hatch without compromising the deterministic, low-latency ethos of the core appliance.
+Lightweight, local-first desktop mode for **Piccolo-AX**, engineered to give users, creators, and developers a complete general-purpose workstation without compromising the deterministic, low-latency ethos of the core appliance.
+
+Unlike a standard lightweight Linux distribution—which typically stops at a bare window manager, a basic text editor, and a stripped-down browser—`piccolo-ax-desktop` pairs a cohesive Qt-native desktop (**LXQt**, **Falkon**, **PCManFM-Qt**, **LXQt Archiver**, **qpdfview**, **Qalculate! Qt**) with an Amiga- and Atari ST-inspired native C/C++ creative, audio, and hardware-diagnostics suite (**GrafX2**, **LibreSprite**, **AzPainter**, **mtPaint**, **MilkyTracker**, **mhWaveEdit**, **Worker**, **GHex**, **CPU-X**, **nvtop**, and **htop**) inside a `< 42 MB` Tier A footprint. Every user config, cache, repository, and optional AppImage persists cleanly to `SHARE` storage—keeping the read-only `EROFS` appliance image immutable, fast to boot into RAM (`toram`), and 100% isolated from real-time audio and emulation cores when you return to Appliance Mode.
 
 ## 🎯 Ethos & Boundaries
 
-* **Local-first & low-bloat:** No chat or social apps, no cloud sync agents, and no background auto-updaters running idle in the tray.
-* **Strict appliance isolation:** The default **Piccolo-AX** appliance boot remains dedicated to real-time/low-latency workloads (`Cores 0–4` vs. Core `5` / `0x20`, `2.00–2.67 ms` audio, media/capture, and controller/synth workstreams). Desktop sessions run as a separate, on-demand secondary mode with zero desktop or transcoding processes running in default appliance mode.
-* **Persistent state on `SHARE`:** User configs, XDG directories, documents, books, `git` repositories, and optional portable tools live on persistent `SHARE` storage rather than bloating the read-only OS image.
-* **Bootloader deferred:** Bootloader menu entries (`grub.cfg` / session branching) are intentionally held off until the desktop session and package profiles are validated on target hardware.
+* **Local-first & low-bloat:** Excludes cloud agents, chat/social apps, and background auto-updaters.
+* **Strict appliance isolation:** Default boot handles low-latency workloads (`Cores 0–4` vs. Core `5`), while desktop sessions run as an isolated secondary mode.
+* **Persistent state on `SHARE`:** User data, XDG directories, documents, and git repositories reside on persistent `SHARE` storage to keep the OS read-only.
+* **Bootloader deferred:** Session branching and bootloader entries are held off until target hardware validation.
 
 ## 📦 Package Tiers
 
 ### 1. Core Desktop (`profiles/desktop-core.mk`)
-Always included when Desktop Mode is enabled:
-* **🖥 Desktop Session & File Managers:** Lightweight session (`LXQt` default or `XFCE`) + X11, **PCManFM-Qt** (`AX_PKG_PCMANFM_QT`), and **Worker** (`AX_PKG_WORKER`, Directory Opus 4-style dual-pane file manager)
-* **🛠️ Developer & Shell Basics:** `git`, terminal tools, diff/patch/ripgrep, and archive utilities (including **lhasa** / `AX_PKG_LHASA` for classic Amiga `.lha`/`.lzh` archives)
-* **🌐 Browser:** **Falkon** (Qt-native C++ browser with built-in ad blocking)
-* **🎬 Media & YouTube Playback:** **mpv** + **yt-dlp** (fullscreen-only via `scripts/launch-yt.sh` and `overlays/common/etc/mpv/mpv.conf`, hardware decode first with safe CPU/SIMD fallback and `bestaudio` selection; dedicated video upscaling remains in `FLAC_AX`)
-* **📝 Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet)
-* **📚 Reading:** **Foliate** (ebooks/comics) + a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`)
-
-### 🎨 2D & Pixel Graphics Suite (Tier A Core)
-`profiles/desktop-core.mk` includes a native C/C++ 2D and pixel-art suite (< 30 MB graphics footprint; < 40 MB total across graphics, classic trackers/audio, binary inspection, and silicon diagnostics) modeled on classic Amiga workflows:
-
-* **🖌️ mtPaint (`AX_PKG_MTPAINT`)**: Indexed palette editing, custom dithering matrices, and low-overhead pixel manipulation (wrapped via `/usr/local/bin/mtpaint` to persist config to `SHARE`).
-* **🕹️ GrafX2 (`AX_PKG_GRAFX2`)**: Pure C/SDL2 256-color pixel editor with Deluxe Paint-style custom brush grabbing, color cycling, and dual-view zoom.
-* **🖍️ AzPainter (`AX_PKG_AZPAINTER`)**: Compact C/X11 16-bit full-color illustration and layer painting app (packaged in `buildroot/package/azpainter/`).
-* **🎞️ LibreSprite (`AX_PKG_LIBRESPRITE`)**: Native C++/SDL2 animated sprite-sheet editor with timeline scrubbing and onion-skinning (packaged in `buildroot/package/libresprite/`).
-
-### 🎵 Classic Tracker & Audio Utilities (Tier A Core)
-* **🎹 MilkyTracker (`AX_PKG_MILKYTRACKER`)**: Lightweight C++/SDL2 `.mod` and `.xm` music tracker inspired by Amiga ProTracker and FastTracker II, pairing natively with USB MIDI controllers (such as the Akai MPK Mini MK3) in Desktop Mode.
-* **🌊 mhWaveEdit (`AX_PKG_MHWAVEEDIT`)**: Fast, low-overhead C/GTK waveform and sample loop editor in the spirit of classic Amiga audio editors, with direct ALSA playback and zero heavy dependencies.
-
-### 🔍 Binary Inspection, Viewer & Diagnostics (Tier A Core)
-* **🔢 GHex (`AX_PKG_GHEX`)**: Lightweight GTK3 hex and binary editor for inspecting ROM headers, save states, and raw binary files (packaged in `buildroot/package/ghex/`).
-* **🖼️ feh & scrot (`AX_PKG_FEH`, `AX_PKG_SCROT`)**: Instant X11 image viewer and command-line screenshot capture utility.
-* **🧠 CPU-X (`AX_PKG_CPUX`)**: System profiling tool (CPU-Z equivalent) displaying CPU clocks, caches, motherboard, memory, and PCI hardware details in both GTK3 GUI and ncurses TUI (packaged in `buildroot/package/cpu-x/`).
-* **📊 nvtop (`AX_PKG_NVTOP`)**: Live terminal GPU monitor (GPU-Z equivalent) tracking NVIDIA and Intel iGPU clocks, VRAM, and utilization.
+* **🖥 Session & File Management:** Lightweight LXQt/XFCE session, PCManFM-Qt (`AX_PKG_PCMANFM_QT`), Worker (`AX_PKG_WORKER`), and LXQt Archiver (`AX_PKG_LXQT_ARCHIVER`).
+* **🛠️ Developer & Shell Basics:** Git, CLI diff/patch tools, ripgrep, and archive utilities including `lhasa` (`AX_PKG_LHASA`) for Amiga archives.
+* **🌐 Browser:** Falkon (Qt-native C++ browser with ad-blocking).
+* **🎬 Media & YouTube:** `mpv` + `yt-dlp` with hardware decoding and safe fallback via `scripts/launch-yt.sh`.
+* **📝 Office & Reading:** AbiWord, Gnumeric, Foliate, and lightweight PDF viewers (`qpdfview`, `MuPDF`, `Atril`).
+* **🎨 2D & Pixel Graphics Suite (< 42 MB total):** mtPaint (`AX_PKG_MTPAINT`), GrafX2 (`AX_PKG_GRAFX2`), AzPainter (`AX_PKG_AZPAINTER`), and LibreSprite (`AX_PKG_LIBRESPRITE`).
+* **🎵 Classic Audio & Trackers:** MilkyTracker (`AX_PKG_MILKYTRACKER`), mhWaveEdit (`AX_PKG_MHWAVEEDIT`), and QASMixer (`AX_PKG_QASMIXER`).
+* **🔍 Diagnostics & Inspection:** GHex (`AX_PKG_GHEX`), feh, scrot, Qalculate! Qt (`AX_PKG_QALCULATE_QT`), CPU-X (`AX_PKG_CPUX`), nvtop (`AX_PKG_NVTOP`), and htop (`AX_PKG_HTOP`).
 
 ### 2. Optional Heavy Tier (`profiles/desktop-heavy.mk`)
-Opt-in install selections or `SHARE`-staged tools/AppImages kept out of the core footprint unless explicitly requested:
-* **🎨 Graphics & Painting:** **GIMP** and/or **Krita**
-* **🎬 Video Editing:** **Shotcut** (or **Kdenlive** for heavier multi-track work)
-* **⚙️ Batch Transcoding:** **HandBrake** (run strictly in desktop mode; avoid overlapping with real-time audio, capture, or emulation)
-* **🔐 Credential Vault:** **KeePassXC** (local-first `.kdbx` password manager stored on `SHARE`)
+* **🎨 Graphics & Video:** GIMP, Krita, Shotcut, Kdenlive, and HandBrake.
+* **🔐 Security:** KeePassXC stored locally on `SHARE`.
 
 ## 🗂️ Repository Layout
 
-```text
-piccolo-ax-desktop/
-├── LICENSE
-├── README.md
-├── topology.md
-├── batocera-ax-external/
-│   ├── Config.in
-│   ├── external.mk
-│   └── board/
-│       └── piccolo-ax/
-│           └── post-build.sh
-├── profiles/
-│   ├── desktop-core.mk
-│   └── desktop-heavy.mk
-├── overlays/
-│   └── common/
-│       └── etc/
-│           ├── mpv/
-│           │   └── mpv.conf
-│           └── profile.d/
-│               └── ax-desktop-xdg.sh
-├── scripts/
-│   ├── gen-desktop-defconfig.sh
-│   ├── launch-desktop.sh
-│   ├── launch-falkon.sh
-│   ├── launch-mtpaint.sh
-│   ├── launch-yt.sh
-│   └── stage-share-apps.sh
-├── buildroot/
-│   ├── Config.in
-│   ├── README.md
-│   └── package/
-│       ├── azpainter/
-│       ├── cpu-x/
-│       ├── ghex/
-│       └── libresprite/
-└── docs/
-    └── packages.md
-```
+Additional repository details and directory structures can be inspected directly in the project files.
