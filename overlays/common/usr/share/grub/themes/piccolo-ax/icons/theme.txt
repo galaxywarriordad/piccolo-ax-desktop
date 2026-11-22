@@ -1,0 +1,44 @@
+# dArkOS-inspired minimalist [AX] GRUB2 theme — Coffee / Espresso palette
+# Staged in overlays/common; grub.cfg activation deferred until hardware validation.
+title-text: ""
+desktop-color: "#0B0806"
+terminal-font: "Fixed Regular 16"
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+terminal-border: "0"
+
++ label {
+  top = 24%
+  left = 0
+  width = 100%
+  align = "center"
+  text = "PICCOLO [AX]"
+  color = "#F4EDE4"
+}
+
++ boot_menu {
+  left = 22%
+  top = 36%
+  width = 56%
+  height = 32%
+  item_color = "#9C8470"
+  selected_item_color = "#C88A55"
+  icon_width = 32
+  icon_height = 32
+  item_icon_space = 14
+  item_height = 44
+  item_padding = 8
+  item_spacing = 10
+  scrollbar = false
+}
+
++ label {
+  top = 74%
+  left = 0
+  width = 100%
+  align = "center"
+  text = "ENTER: BOOT   |   E: EDIT   |   C: CONSOLE"
+  color = "#6E5847"
+}
