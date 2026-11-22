@@ -1,0 +1,17 @@
+<svg xmlns="http://w3.org" viewBox="0 0 128 128" width="128" height="128">
+  <rect x="8" y="8" width="112" height="112" rx="22" fill="#07090D" stroke="#F2F5F8" stroke-width="5"/>
+  <!-- Corner hardware pins (2:3:1 nod) -->
+  <rect x="26" y="2" width="8" height="6" rx="1" fill="#F2F5F8"/>
+  <rect x="60" y="2" width="8" height="6" rx="1" fill="#00E5FF"/>
+  <rect x="94" y="2" width="8" height="6" rx="1" fill="#F2F5F8"/>
+  <rect x="26" y="120" width="8" height="6" rx="1" fill="#F2F5F8"/>
+  <rect x="60" y="120" width="8" height="6" rx="1" fill="#00E5FF"/>
+  <rect x="94" y="120" width="8" height="6" rx="1" fill="#F2F5F8"/>
+  <!-- Stencil [AX] Monogram -->
+  <path d="M32 34 H24 V82 H32 M96 34 H104 V82 H96" fill="none" stroke="#00E5FF" stroke-width="5" stroke-linecap="square"/>
+  <text x="64" y="72" text-anchor="middle" font-family="monospace" font-weight="700" font-size="38" letter-spacing="2" fill="#F2F5F8">AX</text>
+  <!-- Real-time 2ms waveform bar -->
+  <rect x="34" y="94" width="14" height="5" rx="2" fill="#F2F5F8"/>
+  <rect x="52" y="90" width="24" height="9" rx="2" fill="#00E5FF"/>
+  <rect x="80" y="94" width="14" height="5" rx="2" fill="#F2F5F8"/>
+</svg>
