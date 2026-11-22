@@ -1,11 +1,14 @@
-# piccolo-ax-desktop/buildroot/Config.in
-# Custom Buildroot package definitions for Piccolo-AX Desktop Mode.
-
 menu "Piccolo-AX Desktop Custom Packages"
 	if BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH != ""
 		source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/azpainter/Config.in"
 		source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/libresprite/Config.in"
 		source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/ghex/Config.in"
 		source "$BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH/buildroot/package/cpu-x/Config.in"
+	endif
+	if BR2_EXTERNAL_PICCOLO_AX_DESKTOP_PATH = "" && BR2_EXTERNAL_PICCOLO_AX_PATH != ""
+		source "$BR2_EXTERNAL_PICCOLO_AX_PATH/../piccolo-ax-desktop/buildroot/package/azpainter/Config.in"
+		source "$BR2_EXTERNAL_PICCOLO_AX_PATH/../piccolo-ax-desktop/buildroot/package/libresprite/Config.in"
+		source "$BR2_EXTERNAL_PICCOLO_AX_PATH/../piccolo-ax-desktop/buildroot/package/ghex/Config.in"
+		source "$BR2_EXTERNAL_PICCOLO_AX_PATH/../piccolo-ax-desktop/buildroot/package/cpu-x/Config.in"
 	endif
 endmenu
