@@ -1,13 +1,17 @@
 # piccolo-ax-desktop/profiles/desktop-core.mk
 # Core Desktop profile (Tier A): lightweight session, Falkon, office, readers,
 # fullscreen media/YouTube playback, 2D/pixel graphics, binary inspection,
-# silicon diagnostics, and everyday CLI/X11 helpers.
+# classic trackers/audio tools, silicon diagnostics, and CLI/X11 helpers.
 # Excludes heavy creative/transcoding/security suites (see profiles/desktop-heavy.mk).
 
 AX_DESKTOP_CORE_ENABLED ?= y
 
 # Desktop session choice: lxqt (default with Falkon) or xfce
 AX_DESKTOP_SESSION ?= lxqt
+
+# File managers (LXQt native + classic Directory Opus-style dual-pane)
+AX_PKG_PCMANFM_QT ?= y
+AX_PKG_WORKER ?= y
 
 # Core applications
 AX_PKG_FALKON ?= y
@@ -25,6 +29,10 @@ AX_PKG_GRAFX2 ?= y
 AX_PKG_AZPAINTER ?= y
 AX_PKG_LIBRESPRITE ?= y
 
+# Classic Amiga/ST-inspired tracker & lightweight audio editor
+AX_PKG_MILKYTRACKER ?= y
+AX_PKG_MHWAVEEDIT ?= y
+
 # Binary inspection, viewer & screenshot utilities
 AX_PKG_GHEX ?= y
 AX_PKG_FEH ?= y
@@ -41,6 +49,7 @@ AX_DESKTOP_PDF_VIEWER ?= qpdfview
 AX_PKG_GIT ?= y
 AX_PKG_TERMINAL ?= y
 AX_PKG_ARCHIVE_TOOLS ?= y
+AX_PKG_LHASA ?= y
 AX_PKG_DEV_TEXT_TOOLS ?= y
 AX_PKG_X11_HELPERS ?= y
 AX_PKG_TEXT_EDITOR ?= y
