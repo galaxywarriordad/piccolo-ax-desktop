@@ -9,9 +9,10 @@ AX_DESKTOP_CORE_ENABLED ?= y
 # Desktop session choice: lxqt (default with Falkon) or xfce
 AX_DESKTOP_SESSION ?= lxqt
 
-# File managers (LXQt native + classic Directory Opus-style dual-pane)
+# File managers (LXQt native + classic Directory Opus-style dual-pane) & GUI archiver
 AX_PKG_PCMANFM_QT ?= y
 AX_PKG_WORKER ?= y
+AX_PKG_LXQT_ARCHIVER ?= y
 
 # Core applications
 AX_PKG_FALKON ?= y
@@ -29,18 +30,21 @@ AX_PKG_GRAFX2 ?= y
 AX_PKG_AZPAINTER ?= y
 AX_PKG_LIBRESPRITE ?= y
 
-# Classic Amiga/ST-inspired tracker & lightweight audio editor
+# Classic Amiga/ST-inspired tracker & audio utilities
 AX_PKG_MILKYTRACKER ?= y
 AX_PKG_MHWAVEEDIT ?= y
+AX_PKG_QASMIXER ?= y
 
-# Binary inspection, viewer & screenshot utilities
+# Binary inspection, viewer, screenshot & calculator utilities
 AX_PKG_GHEX ?= y
 AX_PKG_FEH ?= y
 AX_PKG_SCROT ?= y
+AX_PKG_QALCULATE_QT ?= y
 
-# Silicon & GPU diagnostics (CPU-Z / GPU-Z equivalents)
+# Silicon, GPU & process diagnostics (CPU-Z / GPU-Z / core-pinning monitors)
 AX_PKG_CPUX ?= y
 AX_PKG_NVTOP ?= y
+AX_PKG_HTOP ?= y
 
 # Lightweight PDF viewer choice: qpdfview, mupdf, or atril
 AX_DESKTOP_PDF_VIEWER ?= qpdfview
