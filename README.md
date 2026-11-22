@@ -13,20 +13,24 @@ Lightweight, local-first desktop mode for **Piccolo-AX**, designed to give users
 
 ### 1. Core Desktop (`profiles/desktop-core.mk`)
 Always included when Desktop Mode is enabled:
-* **🖥 Desktop Session:** Lightweight session (`LXQt` default or `XFCE`) + X11 and file/archive utilities
-* **🛠️ Developer & Shell Basics:** `git` and terminal tools
+* **🖥 Desktop Session & File Managers:** Lightweight session (`LXQt` default or `XFCE`) + X11, **PCManFM-Qt** (`AX_PKG_PCMANFM_QT`), and **Worker** (`AX_PKG_WORKER`, Directory Opus 4-style dual-pane file manager)
+* **🛠️ Developer & Shell Basics:** `git`, terminal tools, diff/patch/ripgrep, and archive utilities (including **lhasa** / `AX_PKG_LHASA` for classic Amiga `.lha`/`.lzh` archives)
 * **🌐 Browser:** **Falkon** (Qt-native C++ browser with built-in ad blocking)
 * **🎬 Media & YouTube Playback:** **mpv** + **yt-dlp** (fullscreen-only via `scripts/launch-yt.sh` and `overlays/common/etc/mpv/mpv.conf`, hardware decode first with safe CPU/SIMD fallback and `bestaudio` selection; dedicated video upscaling remains in `FLAC_AX`)
 * **📝 Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet)
 * **📚 Reading:** **Foliate** (ebooks/comics) + a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`)
 
 ### 🎨 2D & Pixel Graphics Suite (Tier A Core)
-`profiles/desktop-core.mk` includes a native C/C++ 2D and pixel-art suite (< 30 MB graphics footprint; < 35 MB total across graphics, binary inspection, and silicon diagnostics) modeled on classic Amiga graphics workflows:
+`profiles/desktop-core.mk` includes a native C/C++ 2D and pixel-art suite (< 30 MB graphics footprint; < 40 MB total across graphics, classic trackers/audio, binary inspection, and silicon diagnostics) modeled on classic Amiga workflows:
 
 * **🖌️ mtPaint (`AX_PKG_MTPAINT`)**: Indexed palette editing, custom dithering matrices, and low-overhead pixel manipulation (wrapped via `/usr/local/bin/mtpaint` to persist config to `SHARE`).
 * **🕹️ GrafX2 (`AX_PKG_GRAFX2`)**: Pure C/SDL2 256-color pixel editor with Deluxe Paint-style custom brush grabbing, color cycling, and dual-view zoom.
 * **🖍️ AzPainter (`AX_PKG_AZPAINTER`)**: Compact C/X11 16-bit full-color illustration and layer painting app (packaged in `buildroot/package/azpainter/`).
 * **🎞️ LibreSprite (`AX_PKG_LIBRESPRITE`)**: Native C++/SDL2 animated sprite-sheet editor with timeline scrubbing and onion-skinning (packaged in `buildroot/package/libresprite/`).
+
+### 🎵 Classic Tracker & Audio Utilities (Tier A Core)
+* **🎹 MilkyTracker (`AX_PKG_MILKYTRACKER`)**: Lightweight C++/SDL2 `.mod` and `.xm` music tracker inspired by Amiga ProTracker and FastTracker II, pairing natively with USB MIDI controllers (such as the Akai MPK Mini MK3) in Desktop Mode.
+* **🌊 mhWaveEdit (`AX_PKG_MHWAVEEDIT`)**: Fast, low-overhead C/GTK waveform and sample loop editor in the spirit of classic Amiga audio editors, with direct ALSA playback and zero heavy dependencies.
 
 ### 🔍 Binary Inspection, Viewer & Diagnostics (Tier A Core)
 * **🔢 GHex (`AX_PKG_GHEX`)**: Lightweight GTK3 hex and binary editor for inspecting ROM headers, save states, and raw binary files (packaged in `buildroot/package/ghex/`).
@@ -49,16 +53,21 @@ piccolo-ax-desktop/
 ├── README.md
 ├── topology.md
 ├── batocera-ax-external/
+│   ├── Config.in
+│   ├── external.mk
+│   └── board/
+│       └── piccolo-ax/
+│           └── post-build.sh
 ├── profiles/
 │   ├── desktop-core.mk
 │   └── desktop-heavy.mk
 ├── overlays/
 │   └── common/
-│       ├── etc/
-│       │   ├── mpv/
-│       │   │   └── mpv.conf
-│       │   └── profile.d/
-│       │       └── ax-desktop-xdg.sh
+│       └── etc/
+│           ├── mpv/
+│           │   └── mpv.conf
+│           └── profile.d/
+│               └── ax-desktop-xdg.sh
 ├── scripts/
 │   ├── gen-desktop-defconfig.sh
 │   ├── launch-desktop.sh
@@ -76,6 +85,4 @@ piccolo-ax-desktop/
 │       └── libresprite/
 └── docs/
     └── packages.md
-```[cite: 9]
-
-Want to share `profiles/desktop-core.mk` or `scripts/gen-desktop-defconfig.sh` next so we can align the exact variable names?
+```
