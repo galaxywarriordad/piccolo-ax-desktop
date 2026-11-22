@@ -1,7 +1,7 @@
 # piccolo-ax-desktop/profiles/desktop-core.mk
 # Core Desktop profile (Tier A): lightweight session, Falkon, office, readers,
 # fullscreen media/YouTube playback, 2D/pixel graphics, binary inspection,
-# and silicon diagnostics.
+# silicon diagnostics, and everyday CLI/X11 helpers.
 # Excludes heavy creative/transcoding/security suites (see profiles/desktop-heavy.mk).
 
 AX_DESKTOP_CORE_ENABLED ?= y
@@ -37,10 +37,13 @@ AX_PKG_NVTOP ?= y
 # Lightweight PDF viewer choice: qpdfview, mupdf, or atril
 AX_DESKTOP_PDF_VIEWER ?= qpdfview
 
-# Developer & file utilities
+# Developer, file, X11 & editing utilities
 AX_PKG_GIT ?= y
 AX_PKG_TERMINAL ?= y
 AX_PKG_ARCHIVE_TOOLS ?= y
+AX_PKG_DEV_TEXT_TOOLS ?= y
+AX_PKG_X11_HELPERS ?= y
+AX_PKG_TEXT_EDITOR ?= y
 
 # Guardrails: keep heavy creative/media/security tools off by default in core
 AX_DESKTOP_HEAVY_GIMP ?= n
