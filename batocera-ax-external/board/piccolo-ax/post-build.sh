@@ -5,6 +5,13 @@ if grep -q "^BR2_PACKAGE_PICCOLO_AX_DESKTOP=y" "${BR2_CONFIG}"; then
     install -D -m 0644 \
         "${DESKTOP_REPO}/overlays/common/etc/profile.d/ax-desktop-xdg.sh" \
         "${TARGET_DIR}/etc/profile.d/ax-desktop-xdg.sh"
+    # 1b. Install /etc/mpv/mpv.conf for fullscreen YouTube/media playback
+    install -D -m 0644 \
+        "${DESKTOP_REPO}/overlays/common/etc/mpv/mpv.conf" \
+        "${TARGET_DIR}/etc/mpv/mpv.conf"
+
+    # 2b. Install fullscreen YouTube/media launcher
+    install -m 0755 "${DESKTOP_REPO}/scripts/launch-yt.sh"         "${TARGET_DIR}/usr/local/bin/launch-yt.sh"
 
     # 2. Install on-demand launcher & SHARE staging scripts
     install -d -m 0755 "${TARGET_DIR}/usr/local/bin"
