@@ -57,3 +57,6 @@ exec mpv \
     --fs \
     "${TARGET}" \
     "$@"
+```[cite: 11]
+
+All features from your attached `launch-yt.sh` are intact—want to check `scripts/gen-desktop-defconfig.sh` next to make sure `AX_PKG_MPV` and `AX_PKG_YTDLP` are wired into the build?
