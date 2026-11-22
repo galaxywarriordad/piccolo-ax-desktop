@@ -56,6 +56,9 @@ AX_DESKTOP_PDF_VIEWER="$(read_mk_var AX_DESKTOP_PDF_VIEWER "${CORE_MK}")"
 AX_PKG_GIT="$(read_mk_var AX_PKG_GIT "${CORE_MK}")"
 AX_PKG_TERMINAL="$(read_mk_var AX_PKG_TERMINAL "${CORE_MK}")"
 AX_PKG_ARCHIVE_TOOLS="$(read_mk_var AX_PKG_ARCHIVE_TOOLS "${CORE_MK}")"
+AX_PKG_DEV_TEXT_TOOLS="$(read_mk_var AX_PKG_DEV_TEXT_TOOLS "${CORE_MK}")"
+AX_PKG_X11_HELPERS="$(read_mk_var AX_PKG_X11_HELPERS "${CORE_MK}")"
+AX_PKG_TEXT_EDITOR="$(read_mk_var AX_PKG_TEXT_EDITOR "${CORE_MK}")"
 
 AX_DESKTOP_HEAVY_GIMP="$(read_mk_var AX_DESKTOP_HEAVY_GIMP "${CORE_MK}")"
 AX_DESKTOP_HEAVY_KRITA="$(read_mk_var AX_DESKTOP_HEAVY_KRITA "${CORE_MK}")"
@@ -122,8 +125,8 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
     [ "${AX_PKG_NVTOP}" = "y" ] && printf 'BR2_PACKAGE_NVTOP=y\n'
     printf '\n'
 
-    # Developer & Archive Utilities
-    printf '# CLI & Archive Tools\n'
+    # Developer, Archive, Diff/Patch/Search, X11 & Editor Utilities
+    printf '# CLI, Archive, X11 & Editor Tools\n'
     [ "${AX_PKG_GIT}" = "y" ] && printf 'BR2_PACKAGE_GIT=y\n'
     if [ "${AX_PKG_TERMINAL}" = "y" ]; then
         if [ "${AX_DESKTOP_SESSION}" = "xfce" ]; then
@@ -136,6 +139,20 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
         printf 'BR2_PACKAGE_UNZIP=y\n'
         printf 'BR2_PACKAGE_P7ZIP=y\n'
         printf 'BR2_PACKAGE_TAR=y\n'
+    fi
+    if [ "${AX_PKG_DEV_TEXT_TOOLS}" = "y" ]; then
+        printf 'BR2_PACKAGE_DIFFUTILS=y\n'
+        printf 'BR2_PACKAGE_PATCH=y\n'
+        printf 'BR2_PACKAGE_RSYNC=y\n'
+        printf 'BR2_PACKAGE_RIPGREP=y\n'
+    fi
+    if [ "${AX_PKG_X11_HELPERS}" = "y" ]; then
+        printf 'BR2_PACKAGE_XCLIP=y\n'
+        printf 'BR2_PACKAGE_XORG_XRANDR=y\n'
+        printf 'BR2_PACKAGE_SETXKBMAP=y\n'
+    fi
+    if [ "${AX_PKG_TEXT_EDITOR}" = "y" ]; then
+        printf 'BR2_PACKAGE_MICRO=y\n'
     fi
     printf '\n'
 
@@ -169,4 +186,6 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
 } > "${OUT_FILE}"
 
 printf 'Generated Buildroot fragment: %s\n' "${OUT_FILE}"
+```[cite: 9]
 
+Before committing those two files in the browser, double-check that the `BR2_PACKAGE_*` symbol names (`BR2_PACKAGE_MPV`, `BR2_PACKAGE_YTDLP`, `BR2_PACKAGE_RIPGREP`, `BR2_PACKAGE_XCLIP`, `BR2_PACKAGE_XORG_XRANDR`, `BR2_PACKAGE_SETXKBMAP`, `BR2_PACKAGE_MICRO`) match your Buildroot / `batocera-ax-external` config symbols so `make` doesn't complain about unknown symbols. Ready to add BitTorrent next or wrap up `desktop-core.mk` and `gen-desktop-defconfig.sh` first?
