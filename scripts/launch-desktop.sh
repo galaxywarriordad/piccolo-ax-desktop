@@ -4,7 +4,7 @@ set -eu
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 REPO_ROOT="$(CDPATH= cd -- "${SCRIPT_DIR}/.." && pwd)"
 
-# Load SHARE XDG environment if present
+# Load XDG and SHARE environment if present
 if [ -r /etc/profile.d/ax-desktop-xdg.sh ]; then
     # shellcheck source=/dev/null
     . /etc/profile.d/ax-desktop-xdg.sh
@@ -13,17 +13,22 @@ elif [ -r "${REPO_ROOT}/overlays/common/etc/profile.d/ax-desktop-xdg.sh" ]; then
     . "${REPO_ROOT}/overlays/common/etc/profile.d/ax-desktop-xdg.sh"
 fi
 
-SESSION="${AX_DESKTOP_SESSION:-lxqt}"
+if [ "${AX_SHARE_READY:-0}" -ne 1 ]; then
+    printf 'Warning: AX_SHARE_ROOT (%s) is not mounted/writable; using volatile session fallback (%s).\n' \
+        "${AX_SHARE_ROOT:-/userdata}" "${AX_ACTIVE_DESKTOP_ROOT:-/tmp}" >&2
+fi
+
+SESSION="$(printf '%s' "${AX_DESKTOP_SESSION:-lxqt}" | tr '[:upper:]' '[:lower:]')"
 
 case "${SESSION}" in
     lxqt)
         SESSION_BIN="startlxqt"
         ;;
-    xfce)
+    xfce|xfce4)
         SESSION_BIN="startxfce4"
         ;;
     *)
-        printf 'Unsupported AX_DESKTOP_SESSION: %s (expected "lxqt" or "xfce")\n' "${SESSION}" >&2
+        printf 'Error: Unsupported AX_DESKTOP_SESSION: %s (expected "lxqt" or "xfce")\n' "${SESSION}" >&2
         exit 1
         ;;
 esac
