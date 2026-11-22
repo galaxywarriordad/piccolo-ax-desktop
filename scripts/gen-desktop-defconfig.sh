@@ -38,6 +38,8 @@ AX_PKG_FALKON="$(read_mk_var AX_PKG_FALKON "${CORE_MK}")"
 AX_PKG_ABIWORD="$(read_mk_var AX_PKG_ABIWORD "${CORE_MK}")"
 AX_PKG_GNUMERIC="$(read_mk_var AX_PKG_GNUMERIC "${CORE_MK}")"
 AX_PKG_FOLIATE="$(read_mk_var AX_PKG_FOLIATE "${CORE_MK}")"
+AX_PKG_MPV="$(read_mk_var AX_PKG_MPV "${CORE_MK}")"
+AX_PKG_YTDLP="$(read_mk_var AX_PKG_YTDLP "${CORE_MK}")"
 
 AX_PKG_MTPAINT="$(read_mk_var AX_PKG_MTPAINT "${CORE_MK}")"
 AX_PKG_GRAFX2="$(read_mk_var AX_PKG_GRAFX2 "${CORE_MK}")"
@@ -87,12 +89,14 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
     printf '# BR2_PACKAGE_SDDM is not set\n'
     printf '# BR2_PACKAGE_LIGHTDM is not set\n\n'
 
-    # Core Browser, Office & Readers
+    # Core Browser, Media, Office & Readers
     printf '# Core Applications\n'
     [ "${AX_PKG_FALKON}" = "y" ]    && printf 'BR2_PACKAGE_FALKON=y\n'
     [ "${AX_PKG_ABIWORD}" = "y" ]   && printf 'BR2_PACKAGE_ABIWORD=y\n'
     [ "${AX_PKG_GNUMERIC}" = "y" ]  && printf 'BR2_PACKAGE_GNUMERIC=y\n'
     [ "${AX_PKG_FOLIATE}" = "y" ]   && printf 'BR2_PACKAGE_FOLIATE=y\n'
+    [ "${AX_PKG_MPV}" = "y" ]       && printf 'BR2_PACKAGE_MPV=y\n'
+    [ "${AX_PKG_YTDLP}" = "y" ]     && printf 'BR2_PACKAGE_YTDLP=y\n'
 
     case "${AX_DESKTOP_PDF_VIEWER}" in
         qpdfview) printf 'BR2_PACKAGE_QPDFVIEW=y\n' ;;
@@ -165,3 +169,10 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
 } > "${OUT_FILE}"
 
 printf 'Generated Buildroot fragment: %s\n' "${OUT_FILE}"
+```[cite: 11]
+
+### Quick Symbol Check for Your Buildroot Tree
+* Verify whether your Buildroot / `batocera-ax-external` tree spells the Kconfig symbols `BR2_PACKAGE_MPV` and `BR2_PACKAGE_YTDLP` (or `BR2_PACKAGE_YT_DLP`), and make sure `yt-dlp` has its Python runtime/dependencies enabled if packaged as a Python package in Buildroot.
+* Also double-check that `scripts/launch-yt.sh` is installed into `/usr/local/bin/launch-yt.sh` (or `/usr/bin/`) with `0755` permissions in your overlay or post-build step[cite: 10].
+
+Once you run `sh -n scripts/gen-desktop-defconfig.sh` and `sh -n scripts/launch-yt.sh`, the `mpv` + `yt-dlp` stack is ready to test on target[cite: 10, 11]. Which piece of `piccolo-ax-desktop` do you want to check next?
