@@ -12,15 +12,15 @@ Lightweight, local-first desktop mode for **Piccolo-AX**, designed to give users
 ## 📦 Package Tiers
 
 ### 1. Core Desktop (`profiles/desktop-core.mk`)
-Always included when Desktop Mode is enabled ("everything up to the large files"):
-* **🖥 Desktop Session:** Lightweight session (`LXQt` or `XFCE`) + X11 and file/archive utilities
+Always included when Desktop Mode is enabled:
+* **🖥 Desktop Session:** Lightweight session (`LXQt` default or `XFCE`) + X11 and file/archive utilities
 * **🛠️ Developer & Shell Basics:** `git` and terminal tools
 * **🌐 Browser:** **Falkon** (Qt-native C++ browser with built-in ad blocking)
 * **📝 Office:** **AbiWord** (word processor) and **Gnumeric** (spreadsheet)
 * **📚 Reading:** **Foliate** (ebooks/comics) + a lightweight PDF viewer (`qpdfview`, `MuPDF`, or `Atril`)
 
 ### 🎨 2D & Pixel Graphics Suite (Tier A Core)
-`profiles/desktop-core.mk` includes a native C/C++ 2D and pixel-art suite (< 30 MB total footprint) modeled on classic Amiga graphics workflows:
+`profiles/desktop-core.mk` includes a native C/C++ 2D and pixel-art suite (< 30 MB graphics footprint; < 35 MB total across graphics, binary inspection, and silicon diagnostics) modeled on classic Amiga graphics workflows:
 
 * **🖌️ mtPaint (`AX_PKG_MTPAINT`)**: Indexed palette editing, custom dithering matrices, and low-overhead pixel manipulation (wrapped via `/usr/local/bin/mtpaint` to persist config to `SHARE`).
 * **🕹️ GrafX2 (`AX_PKG_GRAFX2`)**: Pure C/SDL2 256-color pixel editor with Deluxe Paint-style custom brush grabbing, color cycling, and dual-view zoom.
@@ -47,6 +47,7 @@ piccolo-ax-desktop/
 ├── LICENSE
 ├── README.md
 ├── topology.md
+├── batocera-ax-external/
 ├── profiles/
 │   ├── desktop-core.mk
 │   └── desktop-heavy.mk
@@ -71,5 +72,9 @@ piccolo-ax-desktop/
 │       └── libresprite/
 └── docs/
     └── packages.md
+```[cite: 16, 17, 18, 19]
 
-```
+<ElicitationsGroup message="Would you like to check any scripts inside piccolo-ax-desktop (such as launch-desktop.sh or ax-desktop-xdg.sh) next?">
+  <Elicitation label="Share desktop scripts" query="Here are the scripts from piccolo-ax-desktop to audit and clean up."/>
+  <Elicitation label="Check another repo" query="Let's check a file from another repository in the suite next."/>
+</ElicitationsGroup>
