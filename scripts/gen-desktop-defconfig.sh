@@ -38,6 +38,9 @@ fi
 
 # Tier A (Core) settings
 AX_DESKTOP_SESSION="$(read_mk_var AX_DESKTOP_SESSION "${CORE_MK}")"
+AX_PKG_PCMANFM_QT="$(read_mk_var AX_PKG_PCMANFM_QT "${CORE_MK}")"
+AX_PKG_WORKER="$(read_mk_var AX_PKG_WORKER "${CORE_MK}")"
+
 AX_PKG_FALKON="$(read_mk_var AX_PKG_FALKON "${CORE_MK}")"
 AX_PKG_ABIWORD="$(read_mk_var AX_PKG_ABIWORD "${CORE_MK}")"
 AX_PKG_GNUMERIC="$(read_mk_var AX_PKG_GNUMERIC "${CORE_MK}")"
@@ -50,6 +53,9 @@ AX_PKG_GRAFX2="$(read_mk_var AX_PKG_GRAFX2 "${CORE_MK}")"
 AX_PKG_AZPAINTER="$(read_mk_var AX_PKG_AZPAINTER "${CORE_MK}")"
 AX_PKG_LIBRESPRITE="$(read_mk_var AX_PKG_LIBRESPRITE "${CORE_MK}")"
 
+AX_PKG_MILKYTRACKER="$(read_mk_var AX_PKG_MILKYTRACKER "${CORE_MK}")"
+AX_PKG_MHWAVEEDIT="$(read_mk_var AX_PKG_MHWAVEEDIT "${CORE_MK}")"
+
 AX_PKG_GHEX="$(read_mk_var AX_PKG_GHEX "${CORE_MK}")"
 AX_PKG_FEH="$(read_mk_var AX_PKG_FEH "${CORE_MK}")"
 AX_PKG_SCROT="$(read_mk_var AX_PKG_SCROT "${CORE_MK}")"
@@ -60,6 +66,7 @@ AX_DESKTOP_PDF_VIEWER="$(read_mk_var AX_DESKTOP_PDF_VIEWER "${CORE_MK}")"
 AX_PKG_GIT="$(read_mk_var AX_PKG_GIT "${CORE_MK}")"
 AX_PKG_TERMINAL="$(read_mk_var AX_PKG_TERMINAL "${CORE_MK}")"
 AX_PKG_ARCHIVE_TOOLS="$(read_mk_var AX_PKG_ARCHIVE_TOOLS "${CORE_MK}")"
+AX_PKG_LHASA="$(read_mk_var AX_PKG_LHASA "${CORE_MK}")"
 AX_PKG_DEV_TEXT_TOOLS="$(read_mk_var AX_PKG_DEV_TEXT_TOOLS "${CORE_MK}")"
 AX_PKG_X11_HELPERS="$(read_mk_var AX_PKG_X11_HELPERS "${CORE_MK}")"
 AX_PKG_TEXT_EDITOR="$(read_mk_var AX_PKG_TEXT_EDITOR "${CORE_MK}")"
@@ -103,6 +110,8 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
             exit 1
             ;;
     esac
+    [ "${AX_PKG_PCMANFM_QT}" = "y" ] && printf 'BR2_PACKAGE_PCMANFM_QT=y\n'
+    [ "${AX_PKG_WORKER}" = "y" ]     && printf 'BR2_PACKAGE_WORKER=y\n'
     printf '# BR2_PACKAGE_SDDM is not set\n'
     printf '# BR2_PACKAGE_LIGHTDM is not set\n\n'
 
@@ -134,6 +143,12 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
     [ "${AX_PKG_LIBRESPRITE}" = "y" ] && printf 'BR2_PACKAGE_LIBRESPRITE=y\n'
     printf '\n'
 
+    # Classic Tracker & Audio Utilities
+    printf '# Classic Tracker & Audio Tools\n'
+    [ "${AX_PKG_MILKYTRACKER}" = "y" ] && printf 'BR2_PACKAGE_MILKYTRACKER=y\n'
+    [ "${AX_PKG_MHWAVEEDIT}" = "y" ]   && printf 'BR2_PACKAGE_MHWAVEEDIT=y\n'
+    printf '\n'
+
     # Binary Inspection, Viewer, Screenshot & Silicon Diagnostics
     printf '# Inspection, Viewer & Diagnostics\n'
     [ "${AX_PKG_GHEX}" = "y" ]  && printf 'BR2_PACKAGE_GHEX=y\n'
@@ -158,6 +173,7 @@ mkdir -p "$(dirname -- "${OUT_FILE}")"
         printf 'BR2_PACKAGE_P7ZIP=y\n'
         printf 'BR2_PACKAGE_TAR=y\n'
     fi
+    [ "${AX_PKG_LHASA}" = "y" ] && printf 'BR2_PACKAGE_LHASA=y\n'
     if [ "${AX_PKG_DEV_TEXT_TOOLS}" = "y" ]; then
         printf 'BR2_PACKAGE_DIFFUTILS=y\n'
         printf 'BR2_PACKAGE_PATCH=y\n'
