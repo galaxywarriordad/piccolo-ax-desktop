@@ -1,0 +1,49 @@
+name: Build Release Artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: "Desktop package tier profile (core or full)"
+        type: choice
+        options:
+          - core
+          - full
+        default: core
+
+jobs:
+  build-overlay:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout piccolo-ax-desktop
+        uses: actions/checkout@v5
+
+      - name: Install Lint & Archive Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends shellcheck zstd tar
+
+      - name: Lint Shell Scripts & Verify Tree
+        run: |
+          find scripts overlay -type f -name "*.sh" -exec shellcheck -x {} + 2>/dev/null || true
+          test -d batocera-ax-external
+          test -d buildroot
+          test -d profiles
+          test -d overlay/common
+
+      - name: Package Desktop Overlay Bundle
+        run: |
+          mkdir -p dist/piccolo-ax-desktop-x86_64
+          cp -a batocera-ax-external buildroot overlay profiles scripts dist/piccolo-ax-desktop-x86_64/
+          echo "PROFILE=${{ inputs.profile }}" > dist/piccolo-ax-desktop-x86_64/BUILD_INFO
+          tar --zstd -cf dist/piccolo-ax-desktop-x86_64.tar.zst -C dist piccolo-ax-desktop-x86_64
+          sha256sum dist/piccolo-ax-desktop-x86_64.tar.zst > dist/piccolo-ax-desktop-x86_64.tar.zst.sha256
+
+      - name: Upload Desktop Overlay Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: piccolo-ax-desktop-x86_64
+          path: |
+            dist/piccolo-ax-desktop-x86_64.tar.zst
+            dist/piccolo-ax-desktop-x86_64.tar.zst.sha256
+          retention-days: 14
