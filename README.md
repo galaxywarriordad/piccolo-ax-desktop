@@ -48,3 +48,12 @@ Additional repository details and directory structures can be inspected directly
 
 - **Main Switch Engine Fork (Forgejo):** [`galaxywarriordad/Eden-Espresso-Wave-AX`](https://git.eden-emu.dev/galaxywarriordad/Eden-Espresso-Wave-AX.git) — Deterministic Nintendo Switch fork tuned for `ax::sdk` core topology, Vulkan telemetry, and low-latency audio, kept aligned with upstream for frictionless PR cherry-picks.
 - **Upstream Ecosystem Hub (Forgejo):** [`eden-emu/eden`](https://git.eden-emu.dev/eden-emu/eden/) — Upstream Eden Switch emulator reference repository.
+## Ecosystem Architecture & Topology
+
+This repository is part of **The Silicon Preservation Society** (`[AX]`) ecosystem—a nine-repository bare-metal hardware preservation stack built around **Policy-in-SDK / Adapter-in-Consumer** separation:
+
+* **Shared Runtime Core:** [`ax-sdk`](https://github.com/galaxywarriordad/ax-sdk) — C++20 `2:3:1` / `1:2:1` core topology, `EngineConfig`, HugeTLB fastmem, and VRAM guardrails.  
+* **Bare-Metal OS & Workbench:** [`Piccolo-AX`](https://github.com/galaxywarriordad/Piccolo-AX) (`x86_64` `6.12-rt` appliance), [`Piccolo-2go`](https://github.com/galaxywarriordad/Piccolo-2go) (`ARM64` `RK3326` handheld OS), [`piccolo-ax-desktop`](https://github.com/galaxywarriordad/piccolo-ax-desktop) (isolated X11 workbench).  
+* **Media & Emulation Consumers:** [`FLAC_AX`](https://github.com/galaxywarriordad/FLAC_AX), [`Eden-Espresso-Wave-AX`](https://github.com/galaxywarriordad/Eden-Espresso-Wave-AX), [`Cemu-Latte-AX`](https://github.com/galaxywarriordad/Cemu-Latte-AX), [`Amiberry-AX`](https://github.com/galaxywarriordad/Amiberry-AX), and [`Generation-X-AX`](https://github.com/galaxywarriordad/Generation-X-AX).
+
+For full core-pinning tables (`2:3:1` and `1:2:1`), cross-repository data flow, and architectural specifications, see the master guide in [**`ax-sdk/docs/ECOSYSTEM_ARCHITECTURE.md`](https://github.com/galaxywarriordad/ax-sdk/blob/main/docs/ECOSYSTEM_ARCHITECTURE.md)**.
