@@ -66,4 +66,4 @@ jobs:
           name: piccolo-ax-image-x86_64
           path: buildroot/output/images/*
           compression-level: 6
-          retention-days: 14
+          retention-days: 14[cite: 16]
