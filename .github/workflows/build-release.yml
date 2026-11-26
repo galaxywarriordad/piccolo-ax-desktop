@@ -3,47 +3,67 @@ name: Build Release Artifacts
 on:
   workflow_dispatch:
     inputs:
-      profile:
-        description: "Desktop package tier profile (core or full)"
-        type: choice
-        options:
-          - core
-          - full
-        default: core
+      defconfig:
+        description: "Piccolo-AX Buildroot defconfig"
+        type: string
+        default: "piccolo_x86_64_defconfig"
 
 jobs:
-  build-overlay:
+  build-image:
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
     steps:
+      - name: Free Runner Disk Space (~25 GB Reclaimed)
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h
+
+      - name: Checkout Piccolo-AX
+        uses: actions/checkout@v5
+        with:
+          path: Piccolo-AX
+          fetch-depth: 1
+
       - name: Checkout piccolo-ax-desktop
         uses: actions/checkout@v5
+        with:
+          repository: galaxywarriordad/piccolo-ax-desktop
+          path: piccolo-ax-desktop
+          fetch-depth: 1
 
-      - name: Install Lint & Archive Tools
+      - name: Checkout Generation-X-AX
+        uses: actions/checkout@v5
+        with:
+          repository: galaxywarriordad/Generation-X-AX
+          path: Generation-X-AX
+          fetch-depth: 1
+          submodules: false
+
+      - name: Install Buildroot Host Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends shellcheck zstd tar
+          sudo apt-get install -y --no-install-recommends \
+            build-essential gcc g++ make binutils patch gzip bzip2 perl tar cpio \
+            unzip rsync file bc wget git python3 libncurses-dev libssl-dev \
+            dosfstools mtools erofs-utils zip ca-certificates
 
-      - name: Lint Shell Scripts & Verify Tree
+      - name: Clone Buildroot
         run: |
-          find scripts overlay -type f -name "*.sh" -exec shellcheck -x {} + 2>/dev/null || true
-          test -d batocera-ax-external
-          test -d buildroot
-          test -d profiles
-          test -d overlay/common
+          PROTO="https"
+          HOST="github.com"
+          REPO="buildroot/buildroot.git"
+          git clone --depth=1 "${PROTO}://${HOST}/${REPO}" buildroot
 
-      - name: Package Desktop Overlay Bundle
+      - name: Configure & Compile Piccolo-AX Image
         run: |
-          mkdir -p dist/piccolo-ax-desktop-x86_64
-          cp -a batocera-ax-external buildroot overlay profiles scripts dist/piccolo-ax-desktop-x86_64/
-          echo "PROFILE=${{ inputs.profile }}" > dist/piccolo-ax-desktop-x86_64/BUILD_INFO
-          tar --zstd -cf dist/piccolo-ax-desktop-x86_64.tar.zst -C dist piccolo-ax-desktop-x86_64
-          sha256sum dist/piccolo-ax-desktop-x86_64.tar.zst > dist/piccolo-ax-desktop-x86_64.tar.zst.sha256
+          cd buildroot
+          make BR2_EXTERNAL="${GITHUB_WORKSPACE}/Piccolo-AX/batocera-ax-external:${GITHUB_WORKSPACE}/piccolo-ax-desktop" "${{ inputs.defconfig }}"
+          make -j"$(nproc)"
 
-      - name: Upload Desktop Overlay Artifact
+      - name: Upload Piccolo-AX Release Image
         uses: actions/upload-artifact@v4
         with:
-          name: piccolo-ax-desktop-x86_64
-          path: |
-            dist/piccolo-ax-desktop-x86_64.tar.zst
-            dist/piccolo-ax-desktop-x86_64.tar.zst.sha256
+          name: piccolo-ax-image-x86_64
+          path: buildroot/output/images/*
+          compression-level: 6
           retention-days: 14
